@@ -1,4 +1,4 @@
-package controller;
+package com.icbt.controller;
 
 public class LoginServlet {
 }
