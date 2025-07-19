@@ -11,7 +11,7 @@ public class CustomerDAO {
 
     // Get customer by account number
     public Customer getCustomerByAccountNumber(int accountNumber) {
-        String sql = "SELECT * FROM customer WHERE account_number = ?";
+        String sql = "SELECT * FROM customers WHERE account_number = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -20,6 +20,7 @@ public class CustomerDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new Customer(
+                            rs.getInt("id"),
                             rs.getInt("account_number"),
                             rs.getString("name"),
                             rs.getString("address"),
@@ -37,7 +38,7 @@ public class CustomerDAO {
 
     // Add a new customer
     public boolean addCustomer(Customer customer) {
-        String sql = "INSERT INTO customer (account_number, name, address, telephone, units_consumed) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customers (account_number, name, address, telephone, units_consumed) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -57,7 +58,7 @@ public class CustomerDAO {
 
     // Update customer
     public boolean updateCustomer(Customer customer) {
-        String sql = "UPDATE customer SET name = ?, address = ?, telephone = ?, units_consumed = ? WHERE account_number = ?";
+        String sql = "UPDATE customers SET name = ?, address = ?, telephone = ?, units_consumed = ? WHERE account_number = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -77,7 +78,7 @@ public class CustomerDAO {
 
     // Delete customer
     public boolean deleteCustomer(int accountNumber) {
-        String sql = "DELETE FROM customer WHERE account_number = ?";
+        String sql = "DELETE FROM customers WHERE account_number = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -90,20 +91,28 @@ public class CustomerDAO {
         }
         return false;
     }
-//    public List<Customer> getAllCustomers() {
-//
-//        String sql = "SELECT * FROM customer";
-//        List<Customer> customers = new ArrayList<>();
-//
-//        try(Connection conn= DBConnection.getConnection();
-//        Statement stmt=conn.createStatement();
-//        ResultSet rs=stmt.executeQuery(sql)
-//            while(rs.next()){
-//                Customer customer=new Customer();
-//                customer.set
-//                customers.add(new Customer(
-//                        rs.getInt
-//                ))
-//        }
-//    }
+
+    public List<Customer> getAllCustomers() {
+
+        String sql = "SELECT * FROM customers";
+        List<Customer> customers = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                customers.add(new Customer(
+                        rs.getInt("id"),
+                        rs.getInt("account_number"),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("telephone"),
+                        rs.getInt("units_consumed")
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return customers;
+    }
 }

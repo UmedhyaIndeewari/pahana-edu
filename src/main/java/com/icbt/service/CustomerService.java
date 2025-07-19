@@ -33,6 +33,7 @@ public class CustomerService {
         Customer customer = customerDAO.getCustomerByAccountNumber(accountNumber);
         if (customer != null) {
             return new CustomerDTO(
+                    customer.getId(),
                     customer.getAccountNumber(),
                     customer.getName(),
                     customer.getAddress(),

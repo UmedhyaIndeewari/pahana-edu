@@ -1,6 +1,7 @@
 package com.icbt.model;
 
 public class Customer {
+    private int id;
     private int accountNumber;
     private String name;
     private String address;
@@ -12,7 +13,8 @@ public class Customer {
     }
 
     // Parameterized constructor
-    public Customer(int accountNumber, String name, String address, String telephone, int unitsConsumed) {
+    public Customer(int id, int accountNumber, String name, String address, String telephone, int unitsConsumed) {
+        this.id = id;
         this.accountNumber = accountNumber;
         this.name = name;
         this.address = address;
@@ -21,6 +23,15 @@ public class Customer {
     }
 
     // Getters and Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getAccountNumber() {
         return accountNumber;
     }

@@ -1,6 +1,7 @@
 package com.icbt.dto;
 
 public class CustomerDTO {
+    private int id;
     private int accountNumber;
     private String name;
     private String address;
@@ -8,7 +9,8 @@ public class CustomerDTO {
     private int unitsConsumed;
 
     // Parameterized constructor
-    public CustomerDTO(int accountNumber, String name, String address, String telephone, int unitsConsumed) {
+    public CustomerDTO(int id, int accountNumber, String name, String address, String telephone, int unitsConsumed) {
+        this.id = id;
         this.accountNumber = accountNumber;
         this.name = name;
         this.address = address;
@@ -18,6 +20,14 @@ public class CustomerDTO {
 
     // Default constructor
     public CustomerDTO() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     // Getters and setters
     public int getAccountNumber() {
