@@ -5,12 +5,14 @@ import com.icbt.model.Customer;
 import com.icbt.service.CustomerService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+@WebServlet("/customers")
 public class CustomerServlet extends HttpServlet {
     private CustomerService customerService;
 
