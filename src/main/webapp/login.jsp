@@ -33,7 +33,7 @@
     }
     input[type="submit"] {
       width: 100%;
-      background-color: #4285F4;
+      background-color: #74d94f;
       color: white;
       border: none;
       padding: 10px;
@@ -42,7 +42,7 @@
       font-weight: bold;
     }
     input[type="submit"]:hover {
-      background-color: #3367d6;
+      background-color: #74d94f;
     }
     .error-message {
       color: red;
