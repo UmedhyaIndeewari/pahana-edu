@@ -3,6 +3,11 @@
 <html>
 <head>
     <title>Add Customer</title>
+
+    <div class="top-actions">
+        <a href="dashboard.jsp">BACK</a>
+    </div>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,7 +47,7 @@
             width: 100%;
             margin-top: 25px;
             padding: 12px;
-            background-color: #4285F4;
+            background-color: #100571;
             color: white;
             border: none;
             border-radius: 6px;
@@ -52,7 +57,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #3367d6;
+            background-color: #68d7ea;
         }
 
         .message {
@@ -71,7 +76,7 @@
 <body>
 <div class="form-container">
     <h2>Add Customer</h2>
-    <form action="customers" method="post">
+    <form action="customers?action=add" method="post">
 
         <label for="name">Account Number</label>
         <input type="text" id="account_number" name="account_number" required>

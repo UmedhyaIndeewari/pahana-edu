@@ -4,6 +4,7 @@ import com.icbt.dao.CustomerDAO;
 import com.icbt.dto.CustomerDTO;
 import com.icbt.model.Customer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
@@ -44,8 +45,20 @@ public class CustomerService {
         return null;
     }
 
-    // Get all customers
-//    public List<CustomerDTO> getAllCustomers() {
-//        return customerDAO.getAllCustomers();
-//    }
+//     Get all customers
+    public List<CustomerDTO> getAllCustomers() {
+        List<CustomerDTO> customers = new ArrayList<>();
+        List<Customer> customerList =  customerDAO.getAllCustomers();
+        for (Customer customer : customerList) {
+            customers.add(new CustomerDTO(
+                    customer.getId(),
+                    customer.getAccountNumber(),
+                    customer.getName(),
+                    customer.getAddress(),
+                    customer.getTelephone(),
+                    customer.getUnitsConsumed()
+            ));
+        }
+        return customers;
+    }
 }

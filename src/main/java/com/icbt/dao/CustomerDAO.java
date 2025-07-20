@@ -96,7 +96,6 @@ public class CustomerDAO {
 
         String sql = "SELECT * FROM customers";
         List<Customer> customers = new ArrayList<>();
-
         try (Connection conn = DBConnection.getConnection()) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);

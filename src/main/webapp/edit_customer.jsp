@@ -3,6 +3,9 @@
 <html>
 <head>
     <title>Edit Customer</title>
+
+
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,7 +74,8 @@
 <body>
 <div class="form-container">
     <h2>Edit Customer</h2>
-    <form action="customers" method="post">
+    <form action="customers?action=edit" method="post">
+        <input type="hidden" id="id" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : "" %>">
 
         <label for="account_number">Account Number</label>
         <input type="text" id="account_number" name="account_number"

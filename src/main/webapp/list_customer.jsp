@@ -4,7 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customer List</title>
+
+
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +41,7 @@
         }
 
         th {
-            background-color: #4285F4;
+            background-color: #100571;
             color: white;
         }
 
@@ -50,7 +52,7 @@
         .action-btn {
             padding: 6px 12px;
             margin: 2px;
-            background-color: #007bff;
+            background-color: #100571;
             color: white;
             border: none;
             border-radius: 4px;
@@ -58,7 +60,7 @@
         }
 
         .action-btn:hover {
-            background-color: #0056b3;
+            background-color: #100571;
         }
 
         .delete-btn {
@@ -73,6 +75,10 @@
 <body>
 <div class="table-container">
     <h2>Customer List</h2>
+
+    <div class="top-actions">
+        <a href="dashboard.jsp">BACK</a>
+    </div>
 
     <table>
         <thead>
@@ -98,8 +104,13 @@
             <td><%= customer.getTelephone() %></td>
             <td><%= customer.getUnitsConsumed() %></td>
             <td>
-                <a class="action-btn" href="customers?action=edit&account_number=<%= customer.getAccountNumber() %>">Edit</a>
-                <a class="action-btn delete-btn" href="customers?action=delete&account_number=<%= customer.getAccountNumber() %>" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a>
+                <a class="action-btn" href="customers?account_number=<%= customer.getAccountNumber() %>">Edit</a>
+                <!-- Delete Button -->
+                <form action="customers" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="account_number" value="<%= customer.getAccountNumber() %>">
+                    <input type="submit" class="action-btn delete-btn" value="Delete">
+                </form>
             </td>
         </tr>
         <%
