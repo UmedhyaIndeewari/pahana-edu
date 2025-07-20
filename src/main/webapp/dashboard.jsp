@@ -16,7 +16,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #eef2f3;
+            background-color: #ffffff;
             padding: 40px;
         }
         .dashboard-box {
@@ -31,17 +31,18 @@
         h2 {
             color: #333;
         }
-        .logout-btn {
-            margin-top: 20px;
+        .dashboard-btn {
+            margin: 15px 10px 0;
             display: inline-block;
-            background-color: #74d94f;
+            background-color: #39024e;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 6px;
             text-decoration: none;
+            font-weight: bold;
         }
-        .logout-btn:hover {
-            background-color: #74d94f;
+        .dashboard-btn:hover {
+            background-color: #c242f4;
         }
     </style>
 </head>
@@ -50,7 +51,9 @@
     <h2>Welcome, <%= user.getUsername() %>!</h2>
     <p>You have successfully logged in.</p>
 
-    <a class="logout-btn" href="logout">Logout</a>
+    <a class="dashboard-btn" href="add_customer.jsp">Add Customer</a>
+    <a class="dashboard-btn" href="customers">List Customers</a>
+    <a class="dashboard-btn" href="logout">Logout</a>
 </div>
 </body>
 </html>
