@@ -24,7 +24,7 @@ public class ItemDAO {
                             rs.getString("name"),
                             rs.getString("category"),
                             rs.getInt("stock_quantity"),
-                            rs.getBigDecimal("price_per_unit")
+                            rs.getDouble("price_per_unit")
                     );
                 }
             }
@@ -44,7 +44,7 @@ public class ItemDAO {
             stmt.setString(1, item.getName());
             stmt.setString(2, item.getCategory());
             stmt.setInt(3, item.getStockQuantity());
-            stmt.setBigDecimal(4, item.getPricePerUnit());
+            stmt.setDouble(4, item.getPricePerUnit());
 
             return stmt.executeUpdate() > 0;
 
@@ -63,7 +63,7 @@ public class ItemDAO {
             stmt.setString(1, item.getName());
             stmt.setString(2, item.getCategory());
             stmt.setInt(3, item.getStockQuantity());
-            stmt.setBigDecimal(4, item.getPricePerUnit());
+            stmt.setDouble(4, item.getPricePerUnit());
             stmt.setInt(5, item.getId());
 
             return stmt.executeUpdate() > 0;
@@ -105,7 +105,7 @@ public class ItemDAO {
                         rs.getString("name"),
                         rs.getString("category"),
                         rs.getInt("stock_quantity"),
-                        rs.getBigDecimal("price_per_unit")
+                        rs.getDouble("price_per_unit")
                 ));
             }
 

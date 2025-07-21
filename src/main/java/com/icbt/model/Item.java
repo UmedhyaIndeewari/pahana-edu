@@ -1,18 +1,18 @@
 package com.icbt.model;
 
-import java.math.BigDecimal;
+
 
 public class Item {
     private int id;
     private String name;
     private String category;
     private int stockQuantity;
-    private BigDecimal pricePerUnit;
+    private Double pricePerUnit;
 
     // Constructors
     public Item() {}
 
-    public Item(int id, String name, String category, int stockQuantity, BigDecimal pricePerUnit) {
+    public Item(int id, String name, String category, int stockQuantity, Double pricePerUnit) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -54,11 +54,11 @@ public class Item {
         this.stockQuantity = stockQuantity;
     }
 
-    public BigDecimal getPricePerUnit() {
+    public Double getPricePerUnit() {
         return pricePerUnit;
     }
 
-    public void setPricePerUnit(BigDecimal pricePerUnit) {
+    public void setPricePerUnit(Double pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 }
