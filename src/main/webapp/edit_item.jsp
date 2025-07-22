@@ -4,6 +4,11 @@
 <html>
 <head>
   <title>Edit Item</title>
+
+  <div class="top-actions">
+    <a href="dashboard.jsp">BACK</a>
+  </div>
+
   <style>
     body {
       font-family: Arial, sans-serif;
