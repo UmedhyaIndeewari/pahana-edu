@@ -54,6 +54,11 @@
     <a class="dashboard-btn" href="add_customer.jsp">Add Customer</a>
     <a class="dashboard-btn" href="customers">List Customers</a>
     <a class="dashboard-btn" href="logout">Logout</a>
+
+    <a class="dashboard-btn" href="add_item.jsp">Add Item</a>
+    <a class="dashboard-btn" href="items">List Items</a>
+    <a class="dashboard-btn" href="logout">Logout</a>
+
 </div>
 </body>
 </html>

@@ -2,7 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Customer</title>
+    <title>Add Item</title>
+
+    <div class="top-actions">
+        <a href="dashboard.jsp">BACK</a>
+    </div>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,7 +35,8 @@
             margin-top: 15px;
         }
 
-        input[type="text"], input[type="email"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -42,7 +48,7 @@
             width: 100%;
             margin-top: 25px;
             padding: 12px;
-            background-color: #28a745;
+            background-color: #100571;
             color: white;
             border: none;
             border-radius: 6px;
@@ -52,7 +58,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #218838;
+            background-color: #68d7ea;
         }
 
         .message {
@@ -70,32 +76,25 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Edit Customer</h2>
-    <form action="customers?action=edit" method="post">
-        <input type="hidden" id="id" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : "" %>">
+    <h2>Add Item</h2>
+    <form action="items?action=add" method="post">
 
-        <label for="account_number">Account Number</label>
-        <input type="text" id="account_number" name="account_number"
-               value="<%= request.getAttribute("account_number") != null ? request.getAttribute("account_number") : "" %>"
-               readonly required>
+        <label for="id">Id</label>
+        <input type="number" id="id" name="id" required>
 
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name"
-               value="<%= request.getAttribute("name") != null ? request.getAttribute("name") : "" %>">
+        <label for="name">Item Name</label>
+        <input type="text" id="name" name="name" required>
 
-        <label for="address">Address</label>
-        <input type="text" id="address" name="address"
-               value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" required>
 
-        <label for="telephone">Telephone</label>
-        <input type="text" id="telephone" name="telephone"
-               value="<%= request.getAttribute("telephone") != null ? request.getAttribute("telephone") : "" %>">
+        <label for="stockQuantity">Stock Quantity</label>
+        <input type="number" id="stockQuantity" name="stock_quantity" required>
 
-        <label for="units_consumed">Units Consumed</label>
-        <input type="text" id="units_consumed" name="units_consumed"
-               value="<%= request.getAttribute("units_consumed") != null ? request.getAttribute("units_consumed") : "" %>">
+        <label for="pricePerUnit">Price Per Unit</label>
+        <input type="number" step="0.01" id="pricePerUnit" name="price_per_unit" required>
 
-        <input type="submit" value="Update Customer">
+        <input type="submit" value="Add Item">
     </form>
 
     <%
