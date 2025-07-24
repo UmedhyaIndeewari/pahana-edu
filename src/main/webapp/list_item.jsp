@@ -68,13 +68,14 @@
       background-color: #bd2130;
     }
   </style>
+  <title>Items</title>
 </head>
 <body>
 <div class="table-container">
   <h2>Item List</h2>
 
   <div class="top-actions">
-    <a href="dashboard.jsp">BACK</a>
+    <a href="dashboard">BACK</a>
   </div>
 
   <table>

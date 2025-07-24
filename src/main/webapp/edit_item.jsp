@@ -5,10 +5,6 @@
 <head>
   <title>Edit Item</title>
 
-  <div class="top-actions">
-    <a href="dashboard.jsp">BACK</a>
-  </div>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -78,6 +74,10 @@
 <%
   Item item = (Item) request.getAttribute("item");
 %>
+
+<div class="top-actions">
+  <a href="dashboard">BACK</a>
+</div>
 <div class="form-container">
   <h2>Edit Item</h2>
   <form action="items?action=edit" method="post">

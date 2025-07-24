@@ -69,6 +69,9 @@
     </style>
 </head>
 <body>
+<div class="top-actions">
+    <a href="dashboard">BACK</a>
+</div>
 <div class="form-container">
     <h2>Edit Customer</h2>
     <form action="customers?action=edit" method="post">
