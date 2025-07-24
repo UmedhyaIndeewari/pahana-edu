@@ -71,13 +71,14 @@
             background-color: #bd2130;
         }
     </style>
+    <title>Customers</title>
 </head>
 <body>
 <div class="table-container">
     <h2>Customer List</h2>
 
     <div class="top-actions">
-        <a href="dashboard.jsp">BACK</a>
+        <a href="dashboard">BACK</a>
     </div>
 
     <table>

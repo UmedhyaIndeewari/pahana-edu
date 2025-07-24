@@ -5,7 +5,7 @@
 
     if (user == null) {
         // Redirect to login if no user is found
-        response.sendRedirect("LoginServlet");
+        response.sendRedirect("login");
         return;
     }
 %>
@@ -51,11 +51,10 @@
     <h2>Welcome, <%= user.getUsername() %>!</h2>
     <p>You have successfully logged in.</p>
 
-    <a class="dashboard-btn" href="add_customer.jsp">Add Customer</a>
+    <a class="dashboard-btn" href="customers?action=new">Add Customer</a>
     <a class="dashboard-btn" href="customers">List Customers</a>
-    <a class="dashboard-btn" href="logout">Logout</a>
 
-    <a class="dashboard-btn" href="add_item.jsp">Add Item</a>
+    <a class="dashboard-btn" href="items?action=new">Add Item</a>
     <a class="dashboard-btn" href="items">List Items</a>
     <a class="dashboard-btn" href="logout">Logout</a>
 

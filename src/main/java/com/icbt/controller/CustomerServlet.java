@@ -27,22 +27,29 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse resp)
             throws ServletException, IOException {
         String accountNumberString = request.getParameter("account_number");
-        if (accountNumberString == null) {
+        String action = request.getParameter("action");
+        if (action == null) {
 
-            List<CustomerDTO> customerList = customerService.getAllCustomers();
-            request.setAttribute("customers", customerList);
+            if (accountNumberString == null) {
 
-            request.getRequestDispatcher("/list_customer.jsp").forward(request,resp);
+                List<CustomerDTO> customerList = customerService.getAllCustomers();
+                request.setAttribute("customers", customerList);
+
+                request.getRequestDispatcher("/list_customer.jsp").forward(request, resp);
+            } else {
+                int accountNumber = Integer.parseInt(accountNumberString);
+                CustomerDTO customerDTO = customerService.getCustomer(accountNumber);
+                request.setAttribute("id", customerDTO.getId());
+                request.setAttribute("account_number", accountNumber);
+                request.setAttribute("name", customerDTO.getName());
+                request.setAttribute("address", customerDTO.getAddress());
+                request.setAttribute("telephone", customerDTO.getTelephone());
+                request.setAttribute("units_consumed", customerDTO.getUnitsConsumed());
+                request.getRequestDispatcher("edit_customer.jsp").forward(request, resp);
+            }
         }else{
-            int accountNumber = Integer.parseInt(accountNumberString);
-            CustomerDTO customerDTO = customerService.getCustomer(accountNumber);
-            request.setAttribute("id", customerDTO.getId());
-            request.setAttribute("account_number", accountNumber);
-            request.setAttribute("name", customerDTO.getName());
-            request.setAttribute("address", customerDTO.getAddress());
-            request.setAttribute("telephone", customerDTO.getTelephone());
-            request.setAttribute("units_consumed", customerDTO.getUnitsConsumed());
-            request.getRequestDispatcher("edit_customer.jsp").forward(request,resp);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("add_customer.jsp");
+            dispatcher.forward(request, resp);
         }
     }
 

@@ -3,11 +3,6 @@
 <html>
 <head>
     <title>Add Item</title>
-
-    <div class="top-actions">
-        <a href="dashboard.jsp">BACK</a>
-    </div>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,6 +70,9 @@
     </style>
 </head>
 <body>
+<div class="top-actions">
+    <a href="dashboard">BACK</a>
+</div>
 <div class="form-container">
     <h2>Add Item</h2>
     <form action="items?action=add" method="post">

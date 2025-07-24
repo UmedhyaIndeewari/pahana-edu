@@ -20,10 +20,12 @@ public class LoginServlet extends HttpServlet {
 
     public void init(){userService = new UserService();}
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath()+"/login.jsp");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO(
@@ -35,8 +37,7 @@ public class LoginServlet extends HttpServlet {
         if(user != null){
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            RequestDispatcher rd = request.getRequestDispatcher("dashboard.jsp");
-            rd.forward(request, response);
+            response.sendRedirect("dashboard");
         } else {
             request.setAttribute("error", "Invalid username or password.");
             RequestDispatcher rd = request.getRequestDispatcher("login.jsp");

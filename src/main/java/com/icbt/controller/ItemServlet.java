@@ -43,7 +43,7 @@ public class ItemServlet extends HttpServlet {
             response.sendRedirect("items");
         } else if (action.equals("new")) {
             // Display empty form
-            RequestDispatcher dispatcher = request.getRequestDispatcher("edit_item.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("add_item.jsp");
             dispatcher.forward(request, response);
         }
     }
