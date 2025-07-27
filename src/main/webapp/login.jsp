@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login Page</title>
+  <title>Pahana Edu Bookshop</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -53,7 +53,7 @@
 </head>
 <body>
 <div class="login-container">
-  <h2>Login</h2>
+  <h2>Pahana Edu Bookshop</h2>
   <form action="login" method="post">
     <label for="username">Username</label>
     <input type="text" id="username" name="username" required>

@@ -15,8 +15,15 @@ public class BillItemService {
     }
 
     // Add a new bill item
-    public boolean addBillItem(BillItem billItem) {
-        return billItemDAO.addBillItem(billItem);
+    public boolean addBillItem(BillItemDTO billItem) {
+        BillItem billItemEntity = new BillItem(
+                billItem.getId(),
+                billItem.getBillId(),
+                billItem.getItemId(),
+                billItem.getQuantity(),
+                billItem.getTotalAmount()
+        );
+        return billItemDAO.addBillItem(billItemEntity);
     }
 
     // Update existing bill item

@@ -1,22 +1,34 @@
 package com.icbt.service;
 
 import com.icbt.dao.BillDAO;
+import com.icbt.dao.BillItemDAO;
+import com.icbt.dao.CustomerDAO;
 import com.icbt.dto.BillDTO;
+import com.icbt.dto.BillItemDTO;
 import com.icbt.model.Bill;
+import com.icbt.model.BillItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillService {
     private final BillDAO billDAO;
+    private final BillItemDAO billItemDAO;
 
     public BillService() {
         this.billDAO = new BillDAO();
+        this.billItemDAO = new BillItemDAO();
     }
 
     // Add a new bill
-    public boolean addBill(Bill bill) {
-        return billDAO.addBill(bill);
+    public boolean addBill(BillDTO bill) {
+        Bill billEntity = new Bill(
+                bill.getId(),
+                bill.getCustomerId(),
+                bill.getTotalAmount(),
+                bill.getBillingDate()
+        );
+        return billDAO.addBill(billEntity);
     }
 
     // Update existing bill
@@ -33,11 +45,26 @@ public class BillService {
     public BillDTO getBill(int id) {
         Bill bill = billDAO.getBillById(id);
         if (bill != null) {
+            List<BillItem> items = billItemDAO.getAllBillItems();
+            List<BillItemDTO> itemDTOs = new ArrayList<>();
+            for (BillItem billItem : items) {
+                if (billItem.getBillId() == id) {
+                    BillItemDTO billItemDTO = new BillItemDTO(
+                            billItem.getId(),
+                            billItem.getBillId(),
+                            billItem.getItemId(),
+                            billItem.getQuantity(),
+                            billItem.getTotalAmount()
+                    );
+                    itemDTOs.add(billItemDTO);
+                }
+            }
             return new BillDTO(
                     bill.getId(),
                     bill.getCustomerId(),
                     bill.getTotalAmount(),
-                    bill.getBillingDate()
+                    bill.getBillingDate(),
+                    itemDTOs
             );
         }
         return null;
