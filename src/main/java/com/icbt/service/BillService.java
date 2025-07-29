@@ -74,12 +74,27 @@ public class BillService {
     public List<BillDTO> getAllBills() {
         List<BillDTO> bills = new ArrayList<>();
         List<Bill> billList = billDAO.getAllBills();
+        List<BillItem> items = billItemDAO.getAllBillItems();
         for (Bill bill : billList) {
+            List<BillItemDTO> itemDTOs = new ArrayList<>();
+
+            for (BillItem billItem : items) {
+                if (billItem.getBillId() == bill.getId()) {
+                    itemDTOs.add(new BillItemDTO(
+                            billItem.getId(),
+                            billItem.getBillId(),
+                            billItem.getItemId(),
+                            billItem.getQuantity(),
+                            billItem.getTotalAmount()
+                    ));
+                }
+            }
             bills.add(new BillDTO(
                     bill.getId(),
                     bill.getCustomerId(),
                     bill.getTotalAmount(),
-                    bill.getBillingDate()
+                    bill.getBillingDate(),
+                    itemDTOs
             ));
         }
         return bills;

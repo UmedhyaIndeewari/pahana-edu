@@ -3,6 +3,7 @@
 <%@ page import="com.icbt.dto.BillDTO" %>
 <%@ page import="com.icbt.dto.BillItemDTO" %>
 <%@ page import="com.icbt.dto.ItemDTO" %>
+<%@ page import="com.icbt.model.Item" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,6 +97,7 @@
         <tbody>
         <%
             List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
+            List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
             if (bills != null && !bills.isEmpty()) {
                 for (BillDTO bill : bills) {
         %>
@@ -107,11 +109,21 @@
             <td>
                 <%
                     StringBuilder itemsText = new StringBuilder();
+                    ItemDTO item = new ItemDTO();
                     List<BillItemDTO> billItems = bill.getItems();
+                   System.out.println("Umedhya Here");
                     if (billItems != null && !billItems.isEmpty()) {
                         for (int i = 0; i < billItems.size(); i++) {
                             BillItemDTO bi = billItems.get(i);
-                            ItemDTO item = bi.getItem();
+                            System.out.println(bill.getItems().get(i).getItemId() + "Item ID");
+
+                            for (ItemDTO it : items) {
+                                if (it.getId() == bi.getItemId()) {
+                                   item = it;
+                                    break;
+
+                                }
+                            }
                             if (item != null) {
                                 itemsText.append(item.getName())
                                         .append(" (")

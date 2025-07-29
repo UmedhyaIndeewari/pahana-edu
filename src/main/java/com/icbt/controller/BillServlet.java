@@ -77,6 +77,8 @@ public class BillServlet extends HttpServlet {
             }
         } else {
             List<BillDTO> billList = billService.getAllBills();
+            List<ItemDTO> items = itemService.getAllItems();
+            request.setAttribute("items", items);
             request.setAttribute("bills", billList);
             request.getRequestDispatcher("list_bill.jsp").forward(request, response);
 
