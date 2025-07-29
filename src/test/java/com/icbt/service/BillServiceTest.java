@@ -43,8 +43,15 @@ public class BillServiceTest {
 
         List<BillItemDTO> items = List.of(item1);
         billDTO.setTotalAmount(new Double("500.00"));
+        billDTO.setItems(items);
+
 
         boolean added = billService.addBill(billDTO);
+        if(added) {
+            List<BillDTO>billDTOs = billService.getAllBills();
+            insertedBillId = billDTOs.getLast().getId();
+        }
+
 
         assertTrue(insertedBillId > 0, "Bill should be inserted and return valid ID.");
     }
