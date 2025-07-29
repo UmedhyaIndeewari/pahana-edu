@@ -77,7 +77,7 @@
     <h2>Add Customer</h2>
     <form action="customers?action=add" method="post">
 
-        <label for="name">Account Number</label>
+        <label for="account_number">Account Number</label>
         <input type="text" id="account_number" name="account_number" required>
 
         <label for="name">Name</label>

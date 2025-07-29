@@ -56,6 +56,9 @@
 
     <a class="dashboard-btn" href="items?action=new">Add Item</a>
     <a class="dashboard-btn" href="items">List Items</a>
+
+    <a class="dashboard-btn" href="bills?action=new">Add Bill</a>
+    <a class="dashboard-btn" href="bills">List Bills</a>
     <a class="dashboard-btn" href="logout">Logout</a>
 
 </div>
