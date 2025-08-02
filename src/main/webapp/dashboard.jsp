@@ -59,6 +59,7 @@
 
     <a class="dashboard-btn" href="bills?action=new">Add Bill</a>
     <a class="dashboard-btn" href="bills">List Bills</a>
+    <a class="dashboard-btn" href="help_section.jsp">Help</a>
     <a class="dashboard-btn" href="logout">Logout</a>
 
 </div>
