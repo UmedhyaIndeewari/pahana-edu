@@ -80,8 +80,12 @@
 <div class="table-container">
     <div class="top-actions">
         <a href="bills?action=new">Create New Bill</a>
+
     </div>
     <h2>All Bills</h2>
+    <div class="top-actions">
+        <a href="dashboard">BACK</a>
+    </div>
 
     <table>
         <thead>
