@@ -59,6 +59,8 @@
 
     <a class="dashboard-btn" href="bills?action=new">Add Bill</a>
     <a class="dashboard-btn" href="bills">List Bills</a>
+    <a class="dashboard-btn" href="customers?action=search">Account Details</a>
+
     <a class="dashboard-btn" href="help">Help</a>
     <a class="dashboard-btn" href="logout">Logout</a>
 

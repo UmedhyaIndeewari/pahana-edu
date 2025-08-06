@@ -28,7 +28,9 @@ public class CustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         String accountNumberString = request.getParameter("account_number");
         String action = request.getParameter("action");
+        System.out.println("action: " + action);
         if (action == null) {
+
 
             if (accountNumberString == null) {
 
@@ -47,7 +49,16 @@ public class CustomerServlet extends HttpServlet {
                 request.setAttribute("units_consumed", customerDTO.getUnitsConsumed());
                 request.getRequestDispatcher("edit_customer.jsp").forward(request, resp);
             }
-        }else{
+        }
+        else if(action.equals("search")){
+            request.getRequestDispatcher("account_details.jsp").forward(request, resp);
+        }
+        else if(action.equals("searched")){
+            CustomerDTO customerDTO = customerService.getCustomer(Integer.parseInt(accountNumberString));
+            request.setAttribute("customer", customerDTO);
+            request.getRequestDispatcher("account_details.jsp").forward(request, resp);
+        }
+        else{
             RequestDispatcher dispatcher = request.getRequestDispatcher("add_customer.jsp");
             dispatcher.forward(request, resp);
         }
@@ -124,6 +135,8 @@ public class CustomerServlet extends HttpServlet {
                     }
                     response.sendRedirect("customers");
                     break;
+
+
 
                 default:
                     request.setAttribute("error", "Unknown action.");
