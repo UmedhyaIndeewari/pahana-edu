@@ -29,7 +29,6 @@ public class BillDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching bill: " + e.getMessage());
         }
         return null;
     }
@@ -47,7 +46,6 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error adding bill: " + e.getMessage());
         }
         return false;
     }
@@ -66,7 +64,6 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error updating bill: " + e.getMessage());
         }
         return false;
     }
@@ -82,7 +79,6 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting bill: " + e.getMessage());
         }
         return false;
     }
@@ -105,7 +101,6 @@ public class BillDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching bills: " + e.getMessage());
         }
         return bills;
     }

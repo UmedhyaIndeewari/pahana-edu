@@ -28,7 +28,6 @@ public class CustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         String accountNumberString = request.getParameter("account_number");
         String action = request.getParameter("action");
-        System.out.println("action: " + action);
         if (action == null) {
 
 

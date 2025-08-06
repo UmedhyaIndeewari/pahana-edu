@@ -30,7 +30,6 @@ public class ItemDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching item: " + e.getMessage());
         }
         return null;
     }
@@ -49,7 +48,6 @@ public class ItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error adding item: " + e.getMessage());
         }
         return false;
     }
@@ -69,7 +67,6 @@ public class ItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error updating item: " + e.getMessage());
         }
         return false;
     }
@@ -85,7 +82,7 @@ public class ItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting item: " + e.getMessage());
+
         }
         return false;
     }
@@ -110,7 +107,6 @@ public class ItemDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching items: " + e.getMessage());
         }
 
         return items;
