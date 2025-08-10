@@ -76,10 +76,7 @@
 <div class="form-container">
     <h2>Add Item</h2>
     <form action="items?action=add" method="post">
-
-        <label for="id">Id</label>
-        <input type="number" id="id" name="id" required>
-
+        
         <label for="name">Item Name</label>
         <input type="text" id="name" name="name" required>
 
