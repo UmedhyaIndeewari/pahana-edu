@@ -84,10 +84,10 @@ public class CustomerServlet extends HttpServlet {
             switch (action) {
                 case "add":
                     String name = request.getParameter("name");
-                    String phone = request.getParameter("phone");
+                    String phone = request.getParameter("telephone");
                     String address = request.getParameter("address");
                     int unitsConsumed = Integer.parseInt(request.getParameter("units_consumed"));
-                    customer = new Customer(id, accountNumber, name, phone, address, unitsConsumed);
+                    customer = new Customer(id, accountNumber, name, address, phone, unitsConsumed);
                     result = customerService.addCustomer(customer);
                     if (result) {
                        response.sendRedirect("customers");
