@@ -100,6 +100,7 @@ public class BillServlet extends HttpServlet {
             }
 
             boolean result = false;
+            List<ItemDTO> items = itemService.getAllItems();
 
             switch (action) {
                 case "add":
@@ -111,7 +112,6 @@ public class BillServlet extends HttpServlet {
                     String[] quantities = request.getParameterValues("quantities[]");
 
                     List<BillItemDTO> billItems = new ArrayList<>();
-                    List<ItemDTO> items = itemService.getAllItems();
 
                     BillDTO newBill = new BillDTO(id, customerId, totalAmount, date);
                     result = billService.addBill(newBill);
@@ -144,9 +144,34 @@ public class BillServlet extends HttpServlet {
                 case "edit":
                     int customerIdEdit = Integer.parseInt(request.getParameter("customer_id"));
                     double totalEdit = Double.parseDouble(request.getParameter("total_amount"));
-                    LocalDate dateEdit = LocalDate.now();
+                    LocalDate dateEdit = LocalDate.parse(request.getParameter("billing_date"));
+
                     Bill billToUpdate = new Bill(id, customerIdEdit, totalEdit, dateEdit);
                     result = billService.updateBill(billToUpdate);
+
+                    String[] quantitiesEdit = request.getParameterValues("quantities[]");
+                    String[] itemIdsEdit = request.getParameterValues("itemIds[]");
+
+                    List<BillItemDTO> itemsToDelete = billItemService.getAllBillItems();
+                    for ( BillItemDTO billItemDTO : itemsToDelete) {
+                        if( billItemDTO.getBillId() == billToUpdate.getId()) {
+                            billItemService.deleteBillItem(billItemDTO.getId());
+                        }
+                    }
+
+                    for ( int i = 0; i < quantitiesEdit.length; i++) {
+                        BillItemDTO billItemDTO = new BillItemDTO();
+                        billItemDTO.setItemId(Integer.parseInt(itemIdsEdit[i]));
+                        billItemDTO.setQuantity(Integer.parseInt(quantitiesEdit[i]));
+                        billItemDTO.setBillId(billToUpdate.getId());
+                        for (ItemDTO item : items) {
+                            if( item.getId() == billItemDTO.getItemId()) {
+                                billItemDTO.setTotalAmount((billItemDTO.getQuantity() * item.getPricePerUnit()));
+                                break;
+                            }
+                        }
+                        billItemService.addBillItem(billItemDTO);
+                    }
                     if (result) {
                         response.sendRedirect("bills");
                     } else {
