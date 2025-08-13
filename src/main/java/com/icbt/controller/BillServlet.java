@@ -78,8 +78,10 @@ public class BillServlet extends HttpServlet {
         } else {
             List<BillDTO> billList = billService.getAllBills();
             List<ItemDTO> items = itemService.getAllItems();
+            List<CustomerDTO>  customers = customerService.getAllCustomers();
             request.setAttribute("items", items);
             request.setAttribute("bills", billList);
+            request.setAttribute("customers", customers);
             request.getRequestDispatcher("list_bill.jsp").forward(request, response);
 
         }
@@ -109,6 +111,7 @@ public class BillServlet extends HttpServlet {
                     String[] quantities = request.getParameterValues("quantities[]");
 
                     List<BillItemDTO> billItems = new ArrayList<>();
+                    List<ItemDTO> items = itemService.getAllItems();
 
                     BillDTO newBill = new BillDTO(id, customerId, totalAmount, date);
                     result = billService.addBill(newBill);
@@ -119,7 +122,12 @@ public class BillServlet extends HttpServlet {
                         billItemDTO.setItemId(Integer.parseInt(itemIds[i]));
                         billItemDTO.setQuantity(Integer.parseInt(quantities[i]));
                         billItemDTO.setBillId(addedBill.getId());
-                        billItemDTO.setTotalAmount((double) (billItemDTO.getQuantity() + billItemDTO.getQuantity()));
+                        for (ItemDTO item : items) {
+                            if( item.getId() == billItemDTO.getItemId()) {
+                                billItemDTO.setTotalAmount((billItemDTO.getQuantity() * item.getPricePerUnit()));
+                                break;
+                            }
+                        }
                         billItems.add(billItemDTO);
                     }
                     for (BillItemDTO billItemDTO : billItems) {

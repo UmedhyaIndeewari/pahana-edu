@@ -3,7 +3,7 @@
 <%@ page import="com.icbt.dto.BillDTO" %>
 <%@ page import="com.icbt.dto.BillItemDTO" %>
 <%@ page import="com.icbt.dto.ItemDTO" %>
-<%@ page import="com.icbt.model.Item" %>
+<%@ page import="com.icbt.dto.CustomerDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -102,12 +102,20 @@
         <%
             List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
             List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
+            List<CustomerDTO> customers = (List<CustomerDTO>) request.getAttribute("customers");
             if (bills != null && !bills.isEmpty()) {
                 for (BillDTO bill : bills) {
         %>
         <tr>
             <td><%= bill.getId() %></td>
-            <td><%= bill.getCustomerId() %></td>
+            <% for (CustomerDTO customer : customers){
+                if (bill.getCustomerId() == customer.getId()){
+              %>
+            <td><%= customer.getName() %></td>
+            <%
+                }
+            }
+            %>
             <td><%= bill.getTotalAmount() %></td>
             <td><%= bill.getBillingDate() %></td>
             <td>
@@ -144,11 +152,11 @@
                 %>
                 <%= itemsText.toString() %>
             </td>
-            <td class="actions">
+            <td class="actions" style="display: flex; flex-direction: row" >
                 <a class="edit-btn" href="bills?action=edit&id=<%= bill.getId() %>">Edit</a>
                 <a class="delete-btn" href="bills?action=delete&id=<%= bill.getId() %>"
                    onclick="return confirm('Are you sure you want to delete this bill?');">Delete</a>
-                <a class="items-btn" href="bills?billId=<%= bill.getId() %>">Items</a>
+<%--                <a class="items-btn" href="bills?billId=<%= bill.getId() %>">Items</a>--%>
             </td>
         </tr>
         <%
