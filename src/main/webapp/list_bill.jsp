@@ -61,6 +61,7 @@
         .edit-btn { background-color: #28a745; }
         .delete-btn { background-color: #dc3545; }
         .items-btn { background-color: #100571; }
+        .print-btn { background-color: #059669; }
 
         .top-actions {
             margin-bottom: 20px;
@@ -153,7 +154,8 @@
                 <a class="edit-btn" href="bills?action=edit&id=<%= bill.getId() %>">Edit</a>
                 <a class="delete-btn" href="bills?action=delete&id=<%= bill.getId() %>"
                    onclick="return confirm('Are you sure you want to delete this bill?');">Delete</a>
-<%--                <a class="items-btn" href="bills?billId=<%= bill.getId() %>">Items</a>--%>
+                <a class="items-btn" href="bills?action=summary&id=<%= bill.getId() %>">View Summary</a>
+                <button class="print-btn" onclick="printBill(<%= bill.getId() %>)" style="border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer;">Print</button>
             </td>
         </tr>
         <%
@@ -167,5 +169,15 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    function printBill(billId) {
+        // Open bill summary in new window for printing
+        const printWindow = window.open('bills?action=summary&id=' + billId, '_blank');
+        printWindow.onload = function() {
+            printWindow.print();
+        };
+    }
+</script>
 </body>
 </html>

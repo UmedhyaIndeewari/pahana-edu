@@ -73,6 +73,25 @@ public class BillServlet extends HttpServlet {
                         }
                     }
                     response.sendRedirect("bills");
+                } else if (action.equals("summary")) {
+                    int id = Integer.parseInt(idParam);
+                    BillDTO bill = billService.getBill(id);
+                    CustomerDTO customer = customerService.getCustomerById(bill.getCustomerId());
+                    
+                    // Get bill items with item details
+                    List<BillItemDTO> billItems = billItemService.getBillItemsByBillId(id);
+                    List<ItemDTO> itemsWithDetails = new ArrayList<>();
+                    
+                    for (BillItemDTO billItem : billItems) {
+                        ItemDTO item = itemService.getItem(billItem.getItemId());
+                        itemsWithDetails.add(item);
+                    }
+                    
+                    request.setAttribute("bill", bill);
+                    request.setAttribute("customer", customer);
+                    request.setAttribute("billItems", billItems);
+                    request.setAttribute("items", itemsWithDetails);
+                    request.getRequestDispatcher("bill_summary.jsp").forward(request, response);
                 }
             }
         } else {
@@ -134,7 +153,8 @@ public class BillServlet extends HttpServlet {
                         billItemService.addBillItem(billItemDTO);
                     }
                     if (result) {
-                        response.sendRedirect("bills");
+                        // Redirect to bill summary page instead of bills list
+                        response.sendRedirect("bills?action=summary&id=" + addedBill.getId());
                     } else {
                         request.setAttribute("error", "Failed to add bill.");
                         request.getRequestDispatcher("add_bill.jsp").forward(request, response);

@@ -110,5 +110,31 @@ public class BillItemDAO {
         }
         return items;
     }
+
+    // Get bill items by bill ID
+    public List<BillItem> getBillItemsByBillId(int billId) {
+        String sql = "SELECT * FROM bill_items WHERE bill_id = ?";
+        List<BillItem> items = new ArrayList<>();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, billId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    items.add(new BillItem(
+                            rs.getInt("id"),
+                            rs.getInt("bill_id"),
+                            rs.getInt("item_id"),
+                            rs.getInt("quantity"),
+                            rs.getDouble("total_amount")
+                    ));
+                }
+            }
+
+        } catch (SQLException e) {
+        }
+        return items;
+    }
 }
 
