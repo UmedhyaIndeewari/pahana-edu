@@ -123,12 +123,9 @@
                     StringBuilder itemsText = new StringBuilder();
                     ItemDTO item = new ItemDTO();
                     List<BillItemDTO> billItems = bill.getItems();
-                   System.out.println("Umedhya Here");
                     if (billItems != null && !billItems.isEmpty()) {
                         for (int i = 0; i < billItems.size(); i++) {
                             BillItemDTO bi = billItems.get(i);
-                            System.out.println(bill.getItems().get(i).getItemId() + "Item ID");
-
                             for (ItemDTO it : items) {
                                 if (it.getId() == bi.getItemId()) {
                                    item = it;
