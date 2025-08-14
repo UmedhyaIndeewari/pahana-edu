@@ -73,13 +73,34 @@ public class BillServlet extends HttpServlet {
                         }
                     }
                     response.sendRedirect("bills");
+                } else if (action.equals("summary")) {
+                    int id = Integer.parseInt(idParam);
+                    BillDTO bill = billService.getBill(id);
+                    CustomerDTO customer = customerService.getCustomerById(bill.getCustomerId());
+                    
+                    // Get bill items with item details
+                    List<BillItemDTO> billItems = billItemService.getBillItemsByBillId(id);
+                    List<ItemDTO> itemsWithDetails = new ArrayList<>();
+                    
+                    for (BillItemDTO billItem : billItems) {
+                        ItemDTO item = itemService.getItem(billItem.getItemId());
+                        itemsWithDetails.add(item);
+                    }
+                    
+                    request.setAttribute("bill", bill);
+                    request.setAttribute("customer", customer);
+                    request.setAttribute("billItems", billItems);
+                    request.setAttribute("items", itemsWithDetails);
+                    request.getRequestDispatcher("bill_summary.jsp").forward(request, response);
                 }
             }
         } else {
             List<BillDTO> billList = billService.getAllBills();
             List<ItemDTO> items = itemService.getAllItems();
+            List<CustomerDTO>  customers = customerService.getAllCustomers();
             request.setAttribute("items", items);
             request.setAttribute("bills", billList);
+            request.setAttribute("customers", customers);
             request.getRequestDispatcher("list_bill.jsp").forward(request, response);
 
         }
@@ -98,6 +119,7 @@ public class BillServlet extends HttpServlet {
             }
 
             boolean result = false;
+            List<ItemDTO> items = itemService.getAllItems();
 
             switch (action) {
                 case "add":
@@ -119,14 +141,20 @@ public class BillServlet extends HttpServlet {
                         billItemDTO.setItemId(Integer.parseInt(itemIds[i]));
                         billItemDTO.setQuantity(Integer.parseInt(quantities[i]));
                         billItemDTO.setBillId(addedBill.getId());
-                        billItemDTO.setTotalAmount((double) (billItemDTO.getQuantity() + billItemDTO.getQuantity()));
+                        for (ItemDTO item : items) {
+                            if( item.getId() == billItemDTO.getItemId()) {
+                                billItemDTO.setTotalAmount((billItemDTO.getQuantity() * item.getPricePerUnit()));
+                                break;
+                            }
+                        }
                         billItems.add(billItemDTO);
                     }
                     for (BillItemDTO billItemDTO : billItems) {
                         billItemService.addBillItem(billItemDTO);
                     }
                     if (result) {
-                        response.sendRedirect("bills");
+                        // Redirect to bill summary page instead of bills list
+                        response.sendRedirect("bills?action=summary&id=" + addedBill.getId());
                     } else {
                         request.setAttribute("error", "Failed to add bill.");
                         request.getRequestDispatcher("add_bill.jsp").forward(request, response);
@@ -136,9 +164,34 @@ public class BillServlet extends HttpServlet {
                 case "edit":
                     int customerIdEdit = Integer.parseInt(request.getParameter("customer_id"));
                     double totalEdit = Double.parseDouble(request.getParameter("total_amount"));
-                    LocalDate dateEdit = LocalDate.now();
+                    LocalDate dateEdit = LocalDate.parse(request.getParameter("billing_date"));
+
                     Bill billToUpdate = new Bill(id, customerIdEdit, totalEdit, dateEdit);
                     result = billService.updateBill(billToUpdate);
+
+                    String[] quantitiesEdit = request.getParameterValues("quantities[]");
+                    String[] itemIdsEdit = request.getParameterValues("itemIds[]");
+
+                    List<BillItemDTO> itemsToDelete = billItemService.getAllBillItems();
+                    for ( BillItemDTO billItemDTO : itemsToDelete) {
+                        if( billItemDTO.getBillId() == billToUpdate.getId()) {
+                            billItemService.deleteBillItem(billItemDTO.getId());
+                        }
+                    }
+
+                    for ( int i = 0; i < quantitiesEdit.length; i++) {
+                        BillItemDTO billItemDTO = new BillItemDTO();
+                        billItemDTO.setItemId(Integer.parseInt(itemIdsEdit[i]));
+                        billItemDTO.setQuantity(Integer.parseInt(quantitiesEdit[i]));
+                        billItemDTO.setBillId(billToUpdate.getId());
+                        for (ItemDTO item : items) {
+                            if( item.getId() == billItemDTO.getItemId()) {
+                                billItemDTO.setTotalAmount((billItemDTO.getQuantity() * item.getPricePerUnit()));
+                                break;
+                            }
+                        }
+                        billItemService.addBillItem(billItemDTO);
+                    }
                     if (result) {
                         response.sendRedirect("bills");
                     } else {

@@ -36,6 +36,33 @@ public class CustomerDAO {
         return null;
     }
 
+    // Get customer by ID
+    public Customer getCustomerById(int id) {
+        String sql = "SELECT * FROM customers WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("id"),
+                            rs.getInt("account_number"),
+                            rs.getString("name"),
+                            rs.getString("address"),
+                            rs.getString("telephone"),
+                            rs.getInt("units_consumed")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
     // Add a new customer
     public boolean addCustomer(Customer customer) {
         String sql = "INSERT INTO customers (account_number, name, address, telephone, units_consumed) VALUES (?, ?, ?, ?, ?)";

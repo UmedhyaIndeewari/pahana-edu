@@ -45,6 +45,22 @@ public class CustomerService {
         return null;
     }
 
+    // Get customer by ID
+    public CustomerDTO getCustomerById(int id) {
+        Customer customer = customerDAO.getCustomerById(id);
+        if (customer != null) {
+            return new CustomerDTO(
+                    customer.getId(),
+                    customer.getAccountNumber(),
+                    customer.getName(),
+                    customer.getAddress(),
+                    customer.getTelephone(),
+                    customer.getUnitsConsumed()
+            );
+        }
+        return null;
+    }
+
 //     Get all customers
     public List<CustomerDTO> getAllCustomers() {
         List<CustomerDTO> customers = new ArrayList<>();

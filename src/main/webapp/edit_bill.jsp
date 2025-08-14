@@ -165,6 +165,7 @@
       for (BillItemDTO billItem : billItems) {
         int selectedItemId = billItem.getItemId();
         int qty = billItem.getQuantity();
+        double price = billItem.getTotalAmount();
     %>
     <tr>
       <td>
@@ -183,7 +184,7 @@
         <input type="number" name="quantities[]" class="qty-input" value="<%= qty %>" min="1" onchange="updateRow(this)"/>
         <button type="button" class="btn btn-qty" onclick="changeQty(this, 1)">+</button>
       </td>
-      <td class="row-total">0.00</td>
+      <td class="row-total"><%= price%></td>
       <td><button type="button" class="btn btn-remove" onclick="removeRow(this)">🗑</button></td>
     </tr>
     <% }} %>
