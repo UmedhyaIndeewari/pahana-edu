@@ -60,6 +60,7 @@ public class CustomerServlet extends HttpServlet {
         }
         else{
 
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("add_customer.jsp");
             dispatcher.forward(request, resp);
         }
@@ -90,6 +91,7 @@ public class CustomerServlet extends HttpServlet {
                     String address = request.getParameter("address");
                     int unitsConsumed = Integer.parseInt(request.getParameter("units_consumed"));
                     customer = new Customer(id, accountNumber, name, address, phone, unitsConsumed);
+
 
                     result = customerService.addCustomer(customer);
                     if (result) {

@@ -6,6 +6,7 @@
 
 <%@ page import="com.icbt.dto.CustomerDTO" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,6 +68,7 @@
         .print-btn { background-color: #059669; }
 
 
+
         .top-actions {
             margin-bottom: 20px;
             text-align: right;
@@ -94,6 +96,7 @@
     </div>
 
 
+
     <table>
         <thead>
         <tr>
@@ -112,6 +115,7 @@
 
             List<CustomerDTO> customers = (List<CustomerDTO>) request.getAttribute("customers");
 
+
             if (bills != null && !bills.isEmpty()) {
                 for (BillDTO bill : bills) {
         %>
@@ -126,6 +130,7 @@
             }
             %>
 
+
             <td><%= bill.getTotalAmount() %></td>
             <td><%= bill.getBillingDate() %></td>
             <td>
@@ -136,6 +141,7 @@
                     if (billItems != null && !billItems.isEmpty()) {
                         for (int i = 0; i < billItems.size(); i++) {
                             BillItemDTO bi = billItems.get(i);
+
 
                             for (ItemDTO it : items) {
                                 if (it.getId() == bi.getItemId()) {
@@ -167,6 +173,7 @@
                 <a class="items-btn" href="bills?action=summary&id=<%= bill.getId() %>">View Summary</a>
                 <button class="print-btn" onclick="printBill(<%= bill.getId() %>)" style="border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer;">Print</button>
 
+
             </td>
         </tr>
         <%
@@ -189,6 +196,7 @@
             printWindow.print();
         };
     }
+
 
 </body>
 </html>

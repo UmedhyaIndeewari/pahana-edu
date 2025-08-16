@@ -136,6 +136,7 @@ public class BillItemDAO {
 
         } catch (SQLException e) {
 
+
         }
         return items;
     }
