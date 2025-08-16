@@ -29,7 +29,7 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error checking user: " + e.getMessage());
+
         }
 
         return null;
