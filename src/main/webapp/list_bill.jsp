@@ -3,7 +3,9 @@
 <%@ page import="com.icbt.dto.BillDTO" %>
 <%@ page import="com.icbt.dto.BillItemDTO" %>
 <%@ page import="com.icbt.dto.ItemDTO" %>
+
 <%@ page import="com.icbt.dto.CustomerDTO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,7 +63,9 @@
         .edit-btn { background-color: #28a745; }
         .delete-btn { background-color: #dc3545; }
         .items-btn { background-color: #100571; }
+
         .print-btn { background-color: #059669; }
+
 
         .top-actions {
             margin-bottom: 20px;
@@ -82,11 +86,13 @@
     <div class="top-actions">
         <a href="bills?action=new">Create New Bill</a>
 
+
     </div>
     <h2>All Bills</h2>
     <div class="top-actions">
         <a href="dashboard">BACK</a>
     </div>
+
 
     <table>
         <thead>
@@ -103,7 +109,9 @@
         <%
             List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
             List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
+
             List<CustomerDTO> customers = (List<CustomerDTO>) request.getAttribute("customers");
+
             if (bills != null && !bills.isEmpty()) {
                 for (BillDTO bill : bills) {
         %>
@@ -117,6 +125,7 @@
                 }
             }
             %>
+
             <td><%= bill.getTotalAmount() %></td>
             <td><%= bill.getBillingDate() %></td>
             <td>
@@ -127,6 +136,7 @@
                     if (billItems != null && !billItems.isEmpty()) {
                         for (int i = 0; i < billItems.size(); i++) {
                             BillItemDTO bi = billItems.get(i);
+
                             for (ItemDTO it : items) {
                                 if (it.getId() == bi.getItemId()) {
                                    item = it;
@@ -156,6 +166,7 @@
                    onclick="return confirm('Are you sure you want to delete this bill?');">Delete</a>
                 <a class="items-btn" href="bills?action=summary&id=<%= bill.getId() %>">View Summary</a>
                 <button class="print-btn" onclick="printBill(<%= bill.getId() %>)" style="border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer;">Print</button>
+
             </td>
         </tr>
         <%
@@ -178,6 +189,6 @@
             printWindow.print();
         };
     }
-</script>
+
 </body>
 </html>

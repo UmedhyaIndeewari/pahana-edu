@@ -29,6 +29,7 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
+
         }
 
         return null;

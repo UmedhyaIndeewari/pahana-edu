@@ -37,6 +37,7 @@ public class ItemService {
         return null;
     }
 
+
     // Update an existing item
     public boolean updateItem(Item item) {
         return itemDAO.updateItem(item);

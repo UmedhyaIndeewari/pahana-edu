@@ -62,6 +62,7 @@
     <a class="dashboard-btn" href="customers?action=search">Account Details</a>
 
     <a class="dashboard-btn" href="help">Help</a>
+
     <a class="dashboard-btn" href="logout">Logout</a>
 
 </div>

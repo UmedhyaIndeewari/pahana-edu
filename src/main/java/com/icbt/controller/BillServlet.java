@@ -73,6 +73,7 @@ public class BillServlet extends HttpServlet {
                         }
                     }
                     response.sendRedirect("bills");
+
                 } else if (action.equals("summary")) {
                     int id = Integer.parseInt(idParam);
                     BillDTO bill = billService.getBill(id);
@@ -92,15 +93,18 @@ public class BillServlet extends HttpServlet {
                     request.setAttribute("billItems", billItems);
                     request.setAttribute("items", itemsWithDetails);
                     request.getRequestDispatcher("bill_summary.jsp").forward(request, response);
+
                 }
             }
         } else {
             List<BillDTO> billList = billService.getAllBills();
             List<ItemDTO> items = itemService.getAllItems();
+
             List<CustomerDTO>  customers = customerService.getAllCustomers();
             request.setAttribute("items", items);
             request.setAttribute("bills", billList);
             request.setAttribute("customers", customers);
+
             request.getRequestDispatcher("list_bill.jsp").forward(request, response);
 
         }
@@ -120,6 +124,7 @@ public class BillServlet extends HttpServlet {
 
             boolean result = false;
             List<ItemDTO> items = itemService.getAllItems();
+
 
             switch (action) {
                 case "add":
@@ -147,6 +152,7 @@ public class BillServlet extends HttpServlet {
                                 break;
                             }
                         }
+
                         billItems.add(billItemDTO);
                     }
                     for (BillItemDTO billItemDTO : billItems) {
@@ -155,6 +161,7 @@ public class BillServlet extends HttpServlet {
                     if (result) {
                         // Redirect to bill summary page instead of bills list
                         response.sendRedirect("bills?action=summary&id=" + addedBill.getId());
+
                     } else {
                         request.setAttribute("error", "Failed to add bill.");
                         request.getRequestDispatcher("add_bill.jsp").forward(request, response);
@@ -192,6 +199,7 @@ public class BillServlet extends HttpServlet {
                         }
                         billItemService.addBillItem(billItemDTO);
                     }
+
                     if (result) {
                         response.sendRedirect("bills");
                     } else {

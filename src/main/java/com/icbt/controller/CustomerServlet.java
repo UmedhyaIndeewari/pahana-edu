@@ -48,6 +48,7 @@ public class CustomerServlet extends HttpServlet {
                 request.setAttribute("units_consumed", customerDTO.getUnitsConsumed());
                 request.getRequestDispatcher("edit_customer.jsp").forward(request, resp);
             }
+
         }
         else if(action.equals("search")){
             request.getRequestDispatcher("account_details.jsp").forward(request, resp);
@@ -58,6 +59,7 @@ public class CustomerServlet extends HttpServlet {
             request.getRequestDispatcher("account_details.jsp").forward(request, resp);
         }
         else{
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("add_customer.jsp");
             dispatcher.forward(request, resp);
         }
@@ -88,6 +90,7 @@ public class CustomerServlet extends HttpServlet {
                     String address = request.getParameter("address");
                     int unitsConsumed = Integer.parseInt(request.getParameter("units_consumed"));
                     customer = new Customer(id, accountNumber, name, address, phone, unitsConsumed);
+
                     result = customerService.addCustomer(customer);
                     if (result) {
                        response.sendRedirect("customers");
@@ -134,7 +137,6 @@ public class CustomerServlet extends HttpServlet {
                     }
                     response.sendRedirect("customers");
                     break;
-
 
 
                 default:

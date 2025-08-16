@@ -1,4 +1,5 @@
 # 📦 Changelog
+
 ## [v1.3.1] - 2025-08-16
 
 ### Added / Completed
@@ -14,6 +15,7 @@
 
 ### Notes
 This release improves billing accuracy.
+
 
 ## [v1.0.0] – 2025-07-29
 
