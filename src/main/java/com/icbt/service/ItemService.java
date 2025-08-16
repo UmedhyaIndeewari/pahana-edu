@@ -22,6 +22,23 @@ public class ItemService {
         return itemDAO.getItemById(id);
     }
 
+    // Get a single item by ID as DTO
+    public ItemDTO getItem(int id) {
+        Item item = itemDAO.getItemById(id);
+        if (item != null) {
+            ItemDTO itemDTO = new ItemDTO();
+            itemDTO.setId(item.getId());
+            itemDTO.setName(item.getName());
+            itemDTO.setCategory(item.getCategory());
+            itemDTO.setStockQuantity(item.getStockQuantity());
+            itemDTO.setPricePerUnit(item.getPricePerUnit());
+            return itemDTO;
+        }
+        return null;
+    }
+
+
+
     // Update an existing item
     public boolean updateItem(Item item) {
         return itemDAO.updateItem(item);

@@ -92,7 +92,9 @@
 
 </div>
 
-<a href="dashboard.jsp" class="back-btn">← Back to Dashboard</a>
+<a href="dashboard" class="back-btn">← Back to Dashboard</a>
+
+
 
 </body>
 </html>

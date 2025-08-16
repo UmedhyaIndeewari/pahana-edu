@@ -31,7 +31,37 @@ public class CustomerDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching customer: " + e.getMessage());
+
+
+        }
+        return null;
+    }
+
+    // Get customer by ID
+    public Customer getCustomerById(int id) {
+        String sql = "SELECT * FROM customers WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("id"),
+                            rs.getInt("account_number"),
+                            rs.getString("name"),
+                            rs.getString("address"),
+                            rs.getString("telephone"),
+                            rs.getInt("units_consumed")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+
+
+
         }
         return null;
     }
@@ -51,7 +81,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error adding customer: " + e.getMessage());
+
         }
         return false;
     }
@@ -71,7 +101,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error updating customer: " + e.getMessage());
+
         }
         return false;
     }
@@ -87,7 +117,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error deleting customer: " + e.getMessage());
+
         }
         return false;
     }

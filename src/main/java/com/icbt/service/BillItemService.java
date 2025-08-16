@@ -66,5 +66,23 @@ public class BillItemService {
         }
         return billItems;
     }
+
+    // Get bill items by bill ID
+    public List<BillItemDTO> getBillItemsByBillId(int billId) {
+        List<BillItemDTO> billItems = new ArrayList<>();
+        List<BillItem> billItemList = billItemDAO.getBillItemsByBillId(billId);
+        for (BillItem billItem : billItemList) {
+            billItems.add(new BillItemDTO(
+                    billItem.getId(),
+                    billItem.getBillId(),
+                    billItem.getItemId(),
+                    billItem.getQuantity(),
+                    billItem.getTotalAmount()
+            ));
+        }
+        return billItems;
+    }
+
+
 }
 
