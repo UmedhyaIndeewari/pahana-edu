@@ -8,266 +8,418 @@
   List<BillItemDTO> billItems = (List<BillItemDTO>) request.getAttribute("billItems");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Edit Bill</title>
-  <style>
-    /* Use same styles from Add Bill */
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
-      background-color: #f9f9f9;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    select, input[type="number"], input[type="date"] {
-      padding: 8px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 100%;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f0f0f0;
-    }
-
-    .qty-input {
-      text-align: center;
-      width: 60px;
-    }
-
-    .btn {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .btn-add {
-      background-color: #100571;
-      color: white;
-      margin-top: 10px;
-    }
-
-    .btn-remove {
-      background-color: #dc3545;
-      color: white;
-    }
-
-    .btn-qty {
-      background-color: #007bff;
-      color: white;
-      width: 30px;
-    }
-
-    .total-row {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    button[type="submit"] {
-      background-color: #28a745;
-      color: white;
-      padding: 10px 20px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .top-actions {
-      margin-bottom: 20px;
-    }
-
-    .top-actions a {
-      text-decoration: none;
-      background: #555;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 6px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Bill - Pahana Edu Bookshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .btn-update {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .section-title i {
+            margin-right: 0.5rem;
+        }
+        .table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        .table td {
+            vertical-align: middle;
+            border-color: #f8f9fa;
+        }
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .btn-remove {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+        }
+        .btn-remove:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .btn-qty {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-qty:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .qty-input {
+            text-align: center;
+            width: 70px;
+            border-radius: 8px;
+        }
+        .total-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard">
+                <i class="fas fa-book-open me-2"></i>
+                Pahana Edu Bookshop
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-light btn-sm" href="dashboard">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
 
-<div class="top-actions">
-  <a href="dashboard">BACK</a>
-</div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container text-center">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-edit me-3"></i>
+                Edit Bill
+            </h1>
+            <p class="lead mb-0">Modify bill information and items</p>
+        </div>
+    </div>
 
-<h2>Edit Bill</h2>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="form-card">
+                    <div class="card-body p-4">
+                        <form action="bills?action=edit" method="post">
+                            <!-- Bill Information Section -->
+                            <div class="form-section">
+                                <h5 class="section-title">
+                                    <i class="fas fa-info-circle"></i>
+                                    Bill Information
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="customer_id" class="form-label">
+                                            <i class="fas fa-user me-2"></i>Customer
+                                        </label>
+                                        <select class="form-select" id="customer_id" name="customer_id" required>
+                                            <option value="">Select Customer</option>
+                                            <%
+                                                if (customers != null) {
+                                                    for (CustomerDTO customer : customers) {
+                                            %>
+                                            <option value="<%= customer.getId() %>" 
+                                                    <%= (billItems != null && !billItems.isEmpty() && 
+                                                         billItems.get(0).getBillId() == customer.getId()) ? "selected" : "" %>>
+                                                <%= customer.getName() %> (<%= customer.getAccountNumber() %>)
+                                            </option>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="billing_date" class="form-label">
+                                            <i class="fas fa-calendar me-2"></i>Billing Date
+                                        </label>
+                                        <input type="date" class="form-control" id="billing_date" 
+                                               name="billing_date" required>
+                                    </div>
+                                </div>
+                            </div>
 
-<form method="post" action="bills">
-  <input type="hidden" name="action" value="edit"/>
-  <input type="hidden" name="id" value="<%= request.getAttribute("id") %>"/>
+                            <!-- Items Section -->
+                            <div class="form-section">
+                                <h5 class="section-title">
+                                    <i class="fas fa-boxes"></i>
+                                    Bill Items
+                                </h5>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="itemsTable">
+                                        <thead>
+                                            <tr>
+                                                <th><i class="fas fa-tag me-2"></i>Item</th>
+                                                <th><i class="fas fa-cubes me-2"></i>Quantity</th>
+                                                <th><i class="fas fa-dollar-sign me-2"></i>Unit Price</th>
+                                                <th><i class="fas fa-calculator me-2"></i>Total</th>
+                                                <th><i class="fas fa-cogs me-2"></i>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="itemsTableBody">
+                                            <%
+                                                if (billItems != null && !billItems.isEmpty()) {
+                                                    for (BillItemDTO billItem : billItems) {
+                                                        ItemDTO item = null;
+                                                        for (ItemDTO i : items) {
+                                                            if (i.getId() == billItem.getItemId()) {
+                                                                item = i;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (item != null) {
+                                            %>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select" name="item_ids[]" required>
+                                                        <option value="">Select Item</option>
+                                                        <%
+                                                            for (ItemDTO i : items) {
+                                                        %>
+                                                        <option value="<%= i.getId() %>" 
+                                                                <%= (i.getId() == item.getId()) ? "selected" : "" %>>
+                                                            <%= i.getName() %> - $<%= String.format("%.2f", i.getPricePerUnit()) %>
+                                                        </option>
+                                                        <%
+                                                            }
+                                                        %>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control qty-input" 
+                                                           name="quantities[]" value="<%= billItem.getQuantity() %>" 
+                                                           min="1" required>
+                                                </td>
+                                                <td>$<%= String.format("%.2f", item.getPricePerUnit()) %></td>
+                                                <td>$<%= String.format("%.2f", billItem.getQuantity() * item.getPricePerUnit()) %></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-action btn-remove" 
+                                                            onclick="removeItem(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <%
+                                                        }
+                                                    }
+                                                }
+                                            %>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-  <div class="form-group">
-    <label for="customer_id">Customer</label>
-    <select name="customer_id" id="customer_id" required>
-      <option value="">-- Select Customer --</option>
-      <% for (CustomerDTO customer : customers) { %>
-      <option value="<%= customer.getId() %>" <%= customer.getId() == (int)request.getAttribute("customer_id") ? "selected" : "" %>>
-        <%= customer.getName() %>
-      </option>
-      <% } %>
-    </select>
-  </div>
+                                <div class="text-center mt-3">
+                                    <button type="button" class="btn btn-action btn-add" onclick="addItem()">
+                                        <i class="fas fa-plus me-2"></i>Add Item
+                                    </button>
+                                </div>
+                            </div>
 
-  <label for="billing_date">Billing Date</label>
-  <input type="date" id="billing_date" name="billing_date"
-         value="<%= request.getAttribute("billing_date") != null ? request.getAttribute("billing_date") : "" %>"
-         required>
+                            <!-- Total Section -->
+                            <div class="total-section text-center">
+                                <h5 class="mb-2">Total Amount</h5>
+                                <div class="total-amount" id="totalAmount">$0.00</div>
+                            </div>
 
-  <table id="itemsTable">
-    <thead>
-    <tr>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Total Price (Rs.)</th>
-      <th>Remove</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% if (billItems != null) {
-      for (BillItemDTO billItem : billItems) {
-        int selectedItemId = billItem.getItemId();
-        int qty = billItem.getQuantity();
-        double price = billItem.getTotalAmount();
-    %>
-    <tr>
-      <td>
-        <select name="itemIds[]" class="item-select" onchange="updatePrice(this)">
-          <option value="">-- Select Item --</option>
-          <% for (ItemDTO item : items) { %>
-          <option value="<%= item.getId() %>" data-price="<%= item.getPricePerUnit() %>"
-                  <%= item.getId() == selectedItemId ? "selected" : "" %>>
-            <%= item.getName() %> - Rs. <%= item.getPricePerUnit() %>
-          </option>
-          <% } %>
-        </select>
-      </td>
-      <td>
-        <button type="button" class="btn btn-qty" onclick="changeQty(this, -1)">-</button>
-        <input type="number" name="quantities[]" class="qty-input" value="<%= qty %>" min="1" onchange="updateRow(this)"/>
-        <button type="button" class="btn btn-qty" onclick="changeQty(this, 1)">+</button>
-      </td>
-      <td class="row-total"><%= price%></td>
-      <td><button type="button" class="btn btn-remove" onclick="removeRow(this)">🗑</button></td>
-    </tr>
-    <% }} %>
-    </tbody>
-  </table>
+                            <!-- Form Actions -->
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <a href="dashboard" class="btn btn-secondary btn-back">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                                </a>
+                                <button type="submit" class="btn btn-success btn-update">
+                                    <i class="fas fa-save me-2"></i>Update Bill
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <button type="button" class="btn btn-add" onclick="addRow()">+ Add Item</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function addItem() {
+            const tbody = document.getElementById('itemsTableBody');
+            const newRow = document.createElement('tr');
+            
+            const items = <%
+                if (items != null) {
+                    out.print("[");
+                    for (int i = 0; i < items.size(); i++) {
+                        ItemDTO item = items.get(i);
+                        if (i > 0) out.print(",");
+                        out.print("{\"id\":" + item.getId() + ",\"name\":\"" + item.getName() + "\",\"price\":" + item.getPricePerUnit() + "}");
+                    }
+                    out.print("]");
+                } else {
+                    out.print("[]");
+                }
+            %>;
+            
+            let optionsHtml = '<option value="">Select Item</option>';
+            items.forEach(item => {
+                optionsHtml += `<option value="${item.id}">${item.name} - $${item.price.toFixed(2)}</option>`;
+            });
+            
+            newRow.innerHTML = `
+                <td>
+                    <select class="form-select" name="item_ids[]" required onchange="updateTotal()">
+                        ${optionsHtml}
+                    </select>
+                </td>
+                <td>
+                    <input type="number" class="form-control qty-input" name="quantities[]" 
+                           value="1" min="1" required onchange="updateTotal()">
+                </td>
+                <td class="unit-price">$0.00</td>
+                <td class="item-total">$0.00</td>
+                <td>
+                    <button type="button" class="btn btn-action btn-remove" onclick="removeItem(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(newRow);
+            updateTotal();
+        }
 
-  <p class="total-row"><strong>Total Amount:</strong> Rs. <span id="grandTotal"><%= request.getAttribute("total_amount")%></span></p>
-  <input type="hidden" name="total_amount" id="total_amount" value="<%= request.getAttribute("total_amount")%>"/>
+        function removeItem(button) {
+            button.closest('tr').remove();
+            updateTotal();
+        }
 
-  <button type="submit">Update Bill</button>
-</form>
+        function updateTotal() {
+            let total = 0;
+            const rows = document.querySelectorAll('#itemsTableBody tr');
+            
+            rows.forEach(row => {
+                const itemSelect = row.querySelector('select[name="item_ids[]"]');
+                const quantityInput = row.querySelector('input[name="quantities[]"]');
+                const unitPriceCell = row.querySelector('.unit-price');
+                const itemTotalCell = row.querySelector('.item-total');
+                
+                if (itemSelect.value && quantityInput.value) {
+                    const selectedItem = items.find(item => item.id == itemSelect.value);
+                    if (selectedItem) {
+                        const quantity = parseInt(quantityInput.value);
+                        const unitPrice = selectedItem.price;
+                        const itemTotal = quantity * unitPrice;
+                        
+                        unitPriceCell.textContent = `$${unitPrice.toFixed(2)}`;
+                        itemTotalCell.textContent = `$${itemTotal.toFixed(2)}`;
+                        total += itemTotal;
+                    }
+                }
+            });
+            
+            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+        }
 
-<script>
-  function updatePrice(selectElem) {
-    const row = selectElem.closest('tr');
-    const qty = parseInt(row.querySelector('.qty-input').value) || 0;
-    const price = parseFloat(selectElem.selectedOptions[0].dataset.price || 0);
-    const totalCell = row.querySelector('.row-total');
-    totalCell.innerText = (qty * price).toFixed(2);
-    updateGrandTotal();
-  }
-
-  function changeQty(btn, delta) {
-    const row = btn.closest('tr');
-    const input = row.querySelector('.qty-input');
-    let value = parseInt(input.value) || 1;
-    value = Math.max(1, value + delta);
-    input.value = value;
-    updateRow(input);
-  }
-
-  function updateRow(inputElem) {
-    const row = inputElem.closest('tr');
-    const select = row.querySelector('.item-select');
-    updatePrice(select);
-  }
-
-  function updateGrandTotal() {
-    let total = 0;
-    document.querySelectorAll('.row-total').forEach(cell => {
-      total += parseFloat(cell.innerText) || 0;
-    });
-    document.getElementById('grandTotal').innerText = total.toFixed(2);
-    document.getElementById('total_amount').value = total.toFixed(2);
-  }
-
-  function addRow() {
-    const tableBody = document.querySelector('#itemsTable tbody');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-      <td>
-        <select name="itemIds[]" class="item-select" onchange="updatePrice(this)">
-          <option value="">-- Select Item --</option>
-          <% for (ItemDTO item : items) { %>
-            <option value="<%= item.getId() %>" data-price="<%= item.getPricePerUnit() %>">
-              <%= item.getName() %> - Rs. <%= item.getPricePerUnit() %>
-            </option>
-          <% } %>
-        </select>
-      </td>
-      <td>
-        <button type="button" class="btn btn-qty" onclick="changeQty(this, -1)">-</button>
-        <input type="number" name="quantities[]" class="qty-input" value="1" min="1" onchange="updateRow(this)"/>
-        <button type="button" class="btn btn-qty" onclick="changeQty(this, 1)">+</button>
-      </td>
-      <td class="row-total">0.00</td>
-      <td><button type="button" class="btn btn-remove" onclick="removeRow(this)">🗑</button></td>
-    `;
-
-    tableBody.appendChild(newRow);
-  }
-
-  function removeRow(btn) {
-    const row = btn.closest('tr');
-    row.remove();
-    updateGrandTotal();
-  }
-
-  updateGrandTotal();
-</script>
-
+        // Initialize total on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotal();
+        });
+    </script>
 </body>
 </html>
