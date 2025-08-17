@@ -250,13 +250,34 @@
                                             </tr>
                                         </thead>
                                         <tbody id="itemsTableBody">
-                                            <!-- Items will be added here dynamically -->
+                                        <tr class="bill-item">
+                                            <td>
+                                                <select class="form-select" name="itemIds[]" required>
+                                                    <option value="">Select Item</option>
+                                                    <% for (ItemDTO item : items) { %>
+                                                    <option value="<%= item.getId() %>" data-price="<%= item.getPricePerUnit() %>">
+                                                        <%= item.getName() %> - $<%= String.format("%.2f", item.getPricePerUnit()) %>
+                                                    </option>
+                                                    <% } %>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control qty-input" name="quantities[]" value="1" min="1" required>
+                                            </td>
+                                            <td class="unit-price">$0.00</td>
+                                            <td class="item-total">$0.00</td>
+                                            <td>
+                                                <button type="button" class="btn btn-action btn-remove remove-item">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div class="text-center mt-3">
-                                    <button type="button" class="btn btn-action btn-add" onclick="addItem()">
+                                    <button type="button" id="addItemBtn" class="btn btn-action btn-add" onclick="addItem()">
                                         <i class="fas fa-plus me-2"></i>Add Item
                                     </button>
                                 </div>
@@ -280,6 +301,7 @@
                             <div class="total-section text-center">
                                 <h5 class="mb-2">Total Amount</h5>
                                 <div class="total-amount" id="totalAmount">$0.00</div>
+                                <input type="hidden" name="total_amount" id="totalAmountInput" value="0.00">
                             </div>
 
                             <!-- Form Actions -->
@@ -305,89 +327,113 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <tbody id="itemsTableBody">
+    <!-- Rows will be added dynamically -->
+    </tbody>
+
     <script>
-        const items = <%
-            if (items != null) {
-                out.print("[");
-                for (int i = 0; i < items.size(); i++) {
-                    ItemDTO item = items.get(i);
-                    if (i > 0) out.print(",");
-                    out.print("{\"id\":" + item.getId() + ",\"name\":\"" + item.getName() + "\",\"price\":" + item.getPricePerUnit() + "}");
-                }
-                out.print("]");
-            } else {
-                out.print("[]");
-            }
-        %>;
 
-        function addItem() {
-            const tbody = document.getElementById('itemsTableBody');
-            const newRow = document.createElement('tr');
-            
-            let optionsHtml = '<option value="">Select Item</option>';
-            items.forEach(item => {
-                optionsHtml += `<option value="${item.id}" data-price="${item.price}">${item.name} - $${item.price.toFixed(2)}</option>`;
-            });
-            
-            newRow.innerHTML = `
-                <td>
-                    <select class="form-select" name="item_ids[]" required onchange="updateTotal()">
-                        ${optionsHtml}
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="form-control qty-input" name="quantities[]" 
-                           value="1" min="1" required onchange="updateTotal()">
-                </td>
-                <td class="unit-price">$0.00</td>
-                <td class="item-total">$0.00</td>
-                <td>
-                    <button type="button" class="btn btn-action btn-remove" onclick="removeItem(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            
-            tbody.appendChild(newRow);
-            updateTotal();
-        }
+        // function addItem() {
+        //     var templateRow = document.querySelector('.bill-item');
+        //     var newRow = templateRow.cloneNode(true);
+        //
+        //     // Reset values
+        //     newRow.querySelector('select').value = '';
+        //     newRow.querySelector('[name="quantities[]"]').value = 1;
+        //     newRow.querySelector('.unit-price').textContent = '$0.00';
+        //     newRow.querySelector('.item-total').textContent = '$0.00';
+        //
+        //     document.getElementById('itemsTableBody').appendChild(newRow);
+        // }
 
-        function removeItem(button) {
-            button.closest('tr').remove();
-            updateTotal();
-        }
 
-        function updateTotal() {
-            let total = 0;
-            const rows = document.querySelectorAll('#itemsTableBody tr');
-            
-            rows.forEach(row => {
-                const itemSelect = row.querySelector('select[name="item_ids[]"]');
-                const quantityInput = row.querySelector('input[name="quantities[]"]');
-                const unitPriceCell = row.querySelector('.unit-price');
-                const itemTotalCell = row.querySelector('.item-total');
-                
-                if (itemSelect.value && quantityInput.value) {
-                    const selectedOption = itemSelect.options[itemSelect.selectedIndex];
-                    const unitPrice = parseFloat(selectedOption.dataset.price);
-                    const quantity = parseInt(quantityInput.value);
-                    const itemTotal = quantity * unitPrice;
-                    
-                    unitPriceCell.textContent = `$${unitPrice.toFixed(2)}`;
-                    itemTotalCell.textContent = `$${itemTotal.toFixed(2)}`;
-                    total += itemTotal;
-                }
-            });
-            
-            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Add initial item row when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            if (items.length > 0) {
-                addItem();
+            var addItemBtn = document.getElementById('addItemBtn');
+            var itemsTableBody = document.getElementById('itemsTableBody');
+
+            // Add new item row
+            if (addItemBtn) {
+                addItemBtn.addEventListener('click', function() {
+                    var newRow = document.querySelector('.bill-item').cloneNode(true);
+
+                    // Reset inputs
+                    var inputs = newRow.querySelectorAll('input, select');
+                    for (var i = 0; i < inputs.length; i++) {
+                        if (inputs[i].name === 'quantities[]') {
+                            inputs[i].value = '1';
+                        } else {
+                            inputs[i].value = '';
+                        }
+                    }
+
+                    // Reset displayed values
+                    newRow.querySelector('.unit-price').textContent = '$0.00';
+                    newRow.querySelector('.item-total').textContent = '$0.00';
+
+                    itemsTableBody.appendChild(newRow);
+                    updateTotals();
+                });
             }
+
+            // Remove row
+            itemsTableBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+                    if (document.querySelectorAll('.bill-item').length > 1) {
+                        e.target.closest('.bill-item').remove();
+                        updateTotals();
+                    }
+                }
+            });
+
+            // Auto-fill price when item is selected
+            itemsTableBody.addEventListener('change', function(e) {
+                if (e.target.name === 'itemIds[]') {
+                    var row = e.target.closest('.bill-item');
+                    var unitPriceCell = row.querySelector('.unit-price');
+                    var selectedOpt = e.target.options[e.target.selectedIndex];
+                    var price = Number(selectedOpt.dataset.price) || 0;
+
+                    unitPriceCell.textContent = '$' + price.toFixed(2);
+                    updateRowTotal(row);
+                }
+            });
+
+            // Update totals when quantity changes
+            itemsTableBody.addEventListener('input', function(e) {
+                if (e.target.name === 'quantities[]') {
+                    var row = e.target.closest('.bill-item');
+                    updateRowTotal(row);
+                }
+            });
+
+            function updateRowTotal(row) {
+                var qty = parseFloat(row.querySelector('[name="quantities[]"]').value) || 0;
+                var unitPriceText = row.querySelector('.unit-price').textContent.replace('$', '') || '0';
+                var unitPrice = parseFloat(unitPriceText) || 0;
+                var itemTotal = qty * unitPrice;
+
+                row.querySelector('.item-total').textContent = '$' + itemTotal.toFixed(2);
+                updateTotals();
+            }
+
+            function updateTotals() {
+                var total = 0;
+                var rows = document.querySelectorAll('.bill-item');
+
+                rows.forEach(function(row) {
+                    var itemTotalText = row.querySelector('.item-total').textContent.replace('$', '');
+                    var itemTotal = parseFloat(itemTotalText) || 0;
+                    total += itemTotal;
+                });
+
+                document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+                document.getElementById('totalAmountInput').value = total.toFixed(2);
+            }
+
+            // Initialize first row totals
+            updateTotals();
         });
     </script>
+
 </body>
 </html>

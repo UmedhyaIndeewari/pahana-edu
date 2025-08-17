@@ -199,6 +199,7 @@
                 <div class="form-card">
                     <div class="card-body p-4">
                         <form action="bills?action=edit" method="post">
+                            <input type="hidden" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : "" %>">
                             <!-- Bill Information Section -->
                             <div class="form-section">
                                 <h5 class="section-title">
@@ -244,6 +245,9 @@
                                     Bill Items
                                 </h5>
                                 
+                                <%
+                                    if (items != null && !items.isEmpty()) {
+                                %>
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="itemsTable">
                                         <thead>
@@ -256,68 +260,82 @@
                                             </tr>
                                         </thead>
                                         <tbody id="itemsTableBody">
-                                            <%
-                                                if (billItems != null && !billItems.isEmpty()) {
-                                                    for (BillItemDTO billItem : billItems) {
-                                                        ItemDTO item = null;
-                                                        for (ItemDTO i : items) {
-                                                            if (i.getId() == billItem.getItemId()) {
-                                                                item = i;
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (item != null) {
-                                            %>
-                                            <tr>
-                                                <td>
-                                                    <select class="form-select" name="item_ids[]" required>
-                                                        <option value="">Select Item</option>
-                                                        <%
-                                                            for (ItemDTO i : items) {
-                                                        %>
-                                                        <option value="<%= i.getId() %>" 
-                                                                <%= (i.getId() == item.getId()) ? "selected" : "" %>>
-                                                            <%= i.getName() %> - $<%= String.format("%.2f", i.getPricePerUnit()) %>
-                                                        </option>
-                                                        <%
-                                                            }
-                                                        %>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control qty-input" 
-                                                           name="quantities[]" value="<%= billItem.getQuantity() %>" 
-                                                           min="1" required>
-                                                </td>
-                                                <td>$<%= String.format("%.2f", item.getPricePerUnit()) %></td>
-                                                <td>$<%= String.format("%.2f", billItem.getQuantity() * item.getPricePerUnit()) %></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-action btn-remove" 
-                                                            onclick="removeItem(this)">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <%
+                                        <%
+                                            if (billItems != null && !billItems.isEmpty()) {
+                                                for (BillItemDTO billItem : billItems) {
+                                                    ItemDTO item = null;
+                                                    for (ItemDTO i : items) {
+                                                        if (i.getId() == billItem.getItemId()) {
+                                                            item = i;
+                                                            break;
                                                         }
                                                     }
+                                                    if (item != null) {
+                                        %>
+                                        <tr class="bill-item">
+                                            <td>
+                                                <select class="form-select item-select" name="itemIds[]" required>
+                                                    <option value="">Select Item</option>
+                                                    <%
+                                                        for (ItemDTO i : items) {
+                                                    %>
+                                                    <option value="<%= i.getId() %>" data-price="<%= i.getPricePerUnit() %>"
+                                                            <%= (i.getId() == item.getId()) ? "selected" : "" %>>
+                                                        <%= i.getName() %> - $<%= String.format("%.2f", i.getPricePerUnit()) %>
+                                                    </option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                                <input type="hidden" name="unitPrices[]" value="<%= item.getPricePerUnit() %>">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control qty-input" name="quantities[]" value="<%= billItem.getQuantity() %>" min="1" required>
+                                            </td>
+                                            <td class="unit-price">$<%= String.format("%.2f", item.getPricePerUnit()) %></td>
+                                            <td class="item-total">$<%= String.format("%.2f", billItem.getQuantity() * item.getPricePerUnit()) %></td>
+                                            <td>
+                                                <button type="button" class="btn btn-action btn-remove remove-item">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <%
+                                                    }
                                                 }
-                                            %>
+                                            }
+                                        %>
                                         </tbody>
+
                                     </table>
                                 </div>
 
                                 <div class="text-center mt-3">
-                                    <button type="button" class="btn btn-action btn-add" onclick="addItem()">
+                                    <button type="button" class="btn btn-action btn-add" onclick="addItem()" id="addItemBtn">
                                         <i class="fas fa-plus me-2"></i>Add Item
                                     </button>
                                 </div>
+                                <%
+                                    } else {
+                                %>
+                                <div class="empty-state text-center">
+                                    <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                                    <h5 class="mt-3">No items available</h5>
+                                    <p class="text-muted">Please add some items to your inventory first</p>
+                                    <a href="items?action=new" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i>Add Item
+                                    </a>
+                                </div>
+                                <%
+                                    }
+                                %>
                             </div>
 
                             <!-- Total Section -->
                             <div class="total-section text-center">
                                 <h5 class="mb-2">Total Amount</h5>
                                 <div class="total-amount" id="totalAmount">$0.00</div>
+                                <input type="hidden" name="total_amount" id="totalAmountInput" value="0.00">
                             </div>
 
                             <!-- Form Actions -->
@@ -338,88 +356,113 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function addItem() {
-            const tbody = document.getElementById('itemsTableBody');
-            const newRow = document.createElement('tr');
-            
-            const items = <%
-                if (items != null) {
-                    out.print("[");
-                    for (int i = 0; i < items.size(); i++) {
-                        ItemDTO item = items.get(i);
-                        if (i > 0) out.print(",");
-                        out.print("{\"id\":" + item.getId() + ",\"name\":\"" + item.getName() + "\",\"price\":" + item.getPricePerUnit() + "}");
-                    }
-                    out.print("]");
-                } else {
-                    out.print("[]");
-                }
-            %>;
-            
-            let optionsHtml = '<option value="">Select Item</option>';
-            items.forEach(item => {
-                optionsHtml += `<option value="${item.id}">${item.name} - $${item.price.toFixed(2)}</option>`;
-            });
-            
-            newRow.innerHTML = `
-                <td>
-                    <select class="form-select" name="item_ids[]" required onchange="updateTotal()">
-                        ${optionsHtml}
-                    </select>
-                </td>
-                <td>
-                    <input type="number" class="form-control qty-input" name="quantities[]" 
-                           value="1" min="1" required onchange="updateTotal()">
-                </td>
-                <td class="unit-price">$0.00</td>
-                <td class="item-total">$0.00</td>
-                <td>
-                    <button type="button" class="btn btn-action btn-remove" onclick="removeItem(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            
-            tbody.appendChild(newRow);
-            updateTotal();
-        }
-
-        function removeItem(button) {
-            button.closest('tr').remove();
-            updateTotal();
-        }
-
-        function updateTotal() {
-            let total = 0;
-            const rows = document.querySelectorAll('#itemsTableBody tr');
-            
-            rows.forEach(row => {
-                const itemSelect = row.querySelector('select[name="item_ids[]"]');
-                const quantityInput = row.querySelector('input[name="quantities[]"]');
-                const unitPriceCell = row.querySelector('.unit-price');
-                const itemTotalCell = row.querySelector('.item-total');
-                
-                if (itemSelect.value && quantityInput.value) {
-                    const selectedItem = items.find(item => item.id == itemSelect.value);
-                    if (selectedItem) {
-                        const quantity = parseInt(quantityInput.value);
-                        const unitPrice = selectedItem.price;
-                        const itemTotal = quantity * unitPrice;
-                        
-                        unitPriceCell.textContent = `$${unitPrice.toFixed(2)}`;
-                        itemTotalCell.textContent = `$${itemTotal.toFixed(2)}`;
-                        total += itemTotal;
-                    }
-                }
-            });
-            
-            document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Initialize total on page load
         document.addEventListener('DOMContentLoaded', function() {
-            updateTotal();
+            var addItemBtn = document.getElementById('addItemBtn');
+            var billItems = document.getElementById('billItems');
+            var customerSelect = document.getElementById('customerId');
+            var dateInput = document.getElementById('billingDate');
+
+            // Add new item row
+            if (addItemBtn) {
+                addItemBtn.addEventListener('click', function() {
+                    var templateRow = document.querySelector('.bill-item');
+                    var newItem = templateRow.cloneNode(true);
+                    var inputs = newItem.querySelectorAll('input, select');
+                    for (var i = 0; i < inputs.length; i++) {
+                        if (inputs[i].tagName === 'SELECT') {
+                            inputs[i].selectedIndex = 0;
+                        } else {
+                            inputs[i].value = inputs[i].type === 'number' && inputs[i].name === 'quantities[]' ? '1' : '';
+                        }
+                    }
+                    billItems.appendChild(newItem);
+                    updateTotals();
+                });
+            }
+
+            // Remove item row
+            billItems.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+                    if (document.querySelectorAll('.bill-item').length > 1) {
+                        e.target.closest('.bill-item').remove();
+                        updateTotals();
+                    }
+                }
+            });
+
+            // Update totals on input changes
+            billItems.addEventListener('input', function(e) {
+                if (e.target.name === 'quantities[]' || e.target.name === 'unitPrices[]') {
+                    updateTotals();
+                }
+            });
+
+            // Auto-fill price when item is selected
+            billItems.addEventListener('change', function(e) {
+                if (e.target.name === 'itemIds[]') {
+                    var itemRow = e.target.closest('.bill-item');
+                    var priceInput = itemRow.querySelector('[name="unitPrices[]"]');
+                    var selectedOption = e.target.options[e.target.selectedIndex];
+                    if (selectedOption.dataset.price) {
+                        priceInput.value = selectedOption.dataset.price;
+                        updateTotals();
+                    }
+                }
+            });
+
+            // Update selected customer display
+            if (customerSelect) {
+                customerSelect.addEventListener('change', function() {
+                    var selectedOption = this.options[this.selectedIndex];
+                    document.getElementById('selectedCustomer').textContent =
+                        selectedOption.value ? selectedOption.text : 'None selected';
+                });
+            }
+
+            // Update date display
+            if (dateInput) {
+                dateInput.addEventListener('change', function() {
+                    document.getElementById('selectedDate').textContent = this.value;
+                });
+            }
+
+            function updateTotals() {
+                var total = 0;
+                var itemCount = 0;
+                var items = document.querySelectorAll('.bill-item');
+
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var qty = parseFloat(item.querySelector('[name="quantities[]"]').value) || 0;
+                    var price = parseFloat(item.querySelector('[name="unitPrices[]"]').value) || 0;
+                    var itemTotal = qty * price;
+
+                    if (qty > 0 && price > 0) {
+                        itemCount++;
+                    }
+
+                    var itemTotalCell = item.querySelector('.item-total');
+                    if (itemTotalCell) {
+                        itemTotalCell.textContent = '$' + itemTotal;
+                    }
+                    total += itemTotal;
+                }
+
+                var subtotal = total;
+                var tax = total * 0.1; // 10% tax
+                var grandTotal = total + tax;
+
+                if (document.getElementById('subtotal')) document.getElementById('subtotal').textContent = '$' + subtotal;
+                if (document.getElementById('tax')) document.getElementById('tax').textContent = '$' + tax;
+                if (document.getElementById('totalAmount')) document.getElementById('totalAmount').textContent = '$' + grandTotal;
+                if (document.getElementById('summaryTotal')) document.getElementById('summaryTotal').textContent = '$' + grandTotal;
+                if (document.getElementById('itemCount')) document.getElementById('itemCount').textContent = itemCount + ' items';
+            }
+
+            // Initialize totals on page load
+            updateTotals();
         });
     </script>
+
 </body>
 </html>
