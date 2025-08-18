@@ -1,4 +1,13 @@
 # 📦 Changelog
+## [v1.4.0] - 2025-08-16
+
+### Changes
+- 🎨 UI Overhaul
+  - Redesigned the entire user interface for a cleaner and more modern look.
+
+- 🛠 Billing Fixes
+  - Corrected errors in **Add Bill** and **Edit Bill** JSP files to improve stability and ensure accurate billing operations.
+
 ## [v1.3.1] - 2025-08-16
 
 ### Added / Completed
