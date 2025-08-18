@@ -59,6 +59,7 @@ public class CustomerDAO {
 
         } catch (SQLException e) {
 
+
         }
         return null;
     }
@@ -78,6 +79,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -97,6 +99,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -112,6 +115,7 @@ public class CustomerDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }

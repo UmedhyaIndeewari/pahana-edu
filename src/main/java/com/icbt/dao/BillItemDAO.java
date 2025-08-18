@@ -49,6 +49,7 @@ public class BillItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -68,6 +69,7 @@ public class BillItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -133,6 +135,7 @@ public class BillItemDAO {
             }
 
         } catch (SQLException e) {
+
         }
         return items;
     }

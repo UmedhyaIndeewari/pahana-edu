@@ -30,6 +30,7 @@ public class ItemDAO {
             }
 
         } catch (SQLException e) {
+
         }
         return null;
     }
@@ -48,6 +49,7 @@ public class ItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -67,6 +69,7 @@ public class ItemDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -107,6 +110,7 @@ public class ItemDAO {
             }
 
         } catch (SQLException e) {
+
         }
 
         return items;

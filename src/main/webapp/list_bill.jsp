@@ -5,6 +5,7 @@
 <%@ page import="com.icbt.dto.ItemDTO" %>
 <%@ page import="com.icbt.dto.CustomerDTO" %>
 <%@ page import="com.icbt.model.Item" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,6 +72,7 @@
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
+
         }
         .btn-edit:hover {
             transform: translateY(-2px);
@@ -323,5 +325,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

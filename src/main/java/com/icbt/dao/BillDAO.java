@@ -29,6 +29,7 @@ public class BillDAO {
             }
 
         } catch (SQLException e) {
+
         }
         return null;
     }
@@ -46,6 +47,7 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -64,6 +66,7 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -79,6 +82,7 @@ public class BillDAO {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
+
         }
         return false;
     }
@@ -101,6 +105,7 @@ public class BillDAO {
             }
 
         } catch (SQLException e) {
+
         }
         return bills;
     }
