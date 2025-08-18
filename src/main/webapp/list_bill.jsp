@@ -3,199 +3,331 @@
 <%@ page import="com.icbt.dto.BillDTO" %>
 <%@ page import="com.icbt.dto.BillItemDTO" %>
 <%@ page import="com.icbt.dto.ItemDTO" %>
-
 <%@ page import="com.icbt.dto.CustomerDTO" %>
+<%@ page import="com.icbt.model.Item" %>
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>List Bills</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill List - Pahana Edu Bookshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
         }
-
-        .table-container {
-            max-width: 1000px;
-            margin: auto;
-            background-color: #fff;
-            padding: 30px;
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: none;
+        }
+        .table-responsive {
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
+        .table {
+            margin-bottom: 0;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem;
         }
-
-        th, td {
-            padding: 14px;
-            border: 1px solid #ddd;
-            text-align: center;
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-color: #f8f9fa;
         }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .btn-edit {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
 
-        th {
-            background-color: #100571;
+
+        }
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             color: white;
         }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .btn-delete {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
         }
-
-        .actions a {
-            margin: 0 5px;
-            padding: 6px 12px;
-            text-decoration: none;
-            color: #fff;
-            border-radius: 4px;
-            font-size: 14px;
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
         }
-
-        .edit-btn { background-color: #28a745; }
-        .delete-btn { background-color: #dc3545; }
-        .items-btn { background-color: #100571; }
-
-        .print-btn { background-color: #059669; }
-
-
-
-        .top-actions {
-            margin-bottom: 20px;
-            text-align: right;
+        .btn-items {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
         }
-
-        .top-actions a {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 14px;
-            text-decoration: none;
-            border-radius: 6px;
+        .btn-items:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .btn-print {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+        }
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .amount-badge {
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .items-preview {
+            max-width: 200px;
+            font-size: 0.875rem;
+        }
+        .customer-name {
+            font-weight: 600;
+            color: #667eea;
         }
     </style>
 </head>
 <body>
-<div class="table-container">
-    <div class="top-actions">
-        <a href="bills?action=new">Create New Bill</a>
 
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard">
+                <i class="fas fa-book-open me-2"></i>
+                Pahana Edu Bookshop
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-light btn-sm" href="dashboard">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container text-center">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-file-invoice-dollar me-3"></i>
+                Bill Management
+            </h1>
+            <p class="lead mb-0">View and manage all customer bills</p>
+        </div>
     </div>
-    <h2>All Bills</h2>
-    <div class="top-actions">
-        <a href="dashboard">BACK</a>
-    </div>
 
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="content-card">
+                    <div class="card-body p-4">
+                        <!-- Header Actions -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="mb-0">
+                                <i class="fas fa-list me-2"></i>
+                                Bill List
+                            </h4>
+                            <a href="bills?action=new" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Create New Bill
+                            </a>
+                        </div>
 
-
-    <table>
-        <thead>
-        <tr>
-            <th>Bill ID</th>
-            <th>Customer ID</th>
-            <th>Total Amount</th>
-            <th>Billing Date</th>
-            <th>Items & Quantities</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%
-            List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
-            List<ItemDTO> items = (List<ItemDTO>) request.getAttribute("items");
-
-            List<CustomerDTO> customers = (List<CustomerDTO>) request.getAttribute("customers");
-
-
-            if (bills != null && !bills.isEmpty()) {
-                for (BillDTO bill : bills) {
-        %>
-        <tr>
-            <td><%= bill.getId() %></td>
-            <% for (CustomerDTO customer : customers){
-                if (bill.getCustomerId() == customer.getId()){
-              %>
-            <td><%= customer.getName() %></td>
-            <%
-                }
-            }
-            %>
-
-
-            <td><%= bill.getTotalAmount() %></td>
-            <td><%= bill.getBillingDate() %></td>
-            <td>
-                <%
-                    StringBuilder itemsText = new StringBuilder();
-                    ItemDTO item = new ItemDTO();
-                    List<BillItemDTO> billItems = bill.getItems();
-                    if (billItems != null && !billItems.isEmpty()) {
-                        for (int i = 0; i < billItems.size(); i++) {
-                            BillItemDTO bi = billItems.get(i);
-
-
-                            for (ItemDTO it : items) {
-                                if (it.getId() == bi.getItemId()) {
-                                   item = it;
-                                    break;
-
-                                }
-                            }
-                            if (item != null) {
-                                itemsText.append(item.getName())
-                                        .append(" (")
-                                        .append(bi.getQuantity())
-                                        .append(")");
-                                if (i < billItems.size() - 1) {
-                                    itemsText.append(", ");
-                                }
-                            }
-                        }
-                    } else {
-                        itemsText.append("No items");
-                    }
-                %>
-                <%= itemsText.toString() %>
-            </td>
-            <td class="actions" style="display: flex; flex-direction: row" >
-                <a class="edit-btn" href="bills?action=edit&id=<%= bill.getId() %>">Edit</a>
-                <a class="delete-btn" href="bills?action=delete&id=<%= bill.getId() %>"
-                   onclick="return confirm('Are you sure you want to delete this bill?');">Delete</a>
-                <a class="items-btn" href="bills?action=summary&id=<%= bill.getId() %>">View Summary</a>
-                <button class="print-btn" onclick="printBill(<%= bill.getId() %>)" style="border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 14px; cursor: pointer;">Print</button>
-
-
-            </td>
-        </tr>
-        <%
-            }
-        } else {
-        %>
-        <tr>
-            <td colspan="6">No bills found.</td>
-        </tr>
-        <% } %>
-        </tbody>
-    </table>
-</div>
-
-<script>
-    function printBill(billId) {
-        // Open bill summary in new window for printing
-        const printWindow = window.open('bills?action=summary&id=' + billId, '_blank');
-        printWindow.onload = function() {
-            printWindow.print();
-        };
+                        <!-- Bill Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-hashtag me-2"></i>Bill ID</th>
+                                        <th><i class="fas fa-user me-2"></i>Customer</th>
+                                        <th><i class="fas fa-dollar-sign me-2"></i>Total Amount</th>
+                                        <th><i class="fas fa-calendar me-2"></i>Billing Date</th>
+                                        <th><i class="fas fa-boxes me-2"></i>Items & Quantities</th>
+                                        <th><i class="fas fa-cogs me-2"></i>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                        List<BillDTO> bills = (List<BillDTO>) request.getAttribute("bills");
+                                        if (bills != null && !bills.isEmpty()) {
+                                            for (BillDTO bill : bills) {
+                                    %>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-bold text-primary">#<%= bill.getId() %></span>
+                                        </td>
+                                        <td>
+      <%
+                                            List<CustomerDTO> customers = (List<CustomerDTO>) request.getAttribute("customers");
+                                                for (CustomerDTO customer : customers){
+                                                    if(customer.getId() == bill.getCustomerId()){
+                                                %>
+                                                    <span class="customer-name"><%= customer.getName() != null ? customer.getName() : "N/A" %></span>
+<%
+                                            }
     }
+                                            %>
+                                        </td>
+                                        <td>
+                                            <span class="badge amount-badge text-white">$<%= String.format("%.2f", bill.getTotalAmount()) %></span>
+                                        </td>
+                                        <td><%= bill.getBillingDate() != null ? bill.getBillingDate() : "N/A" %></td>
+                                        <td>
+                                            <div class="items-preview">
+                                                <%
+                                                    List<BillItemDTO> billItems = bill.getItems();
+                                                    if (billItems != null && !billItems.isEmpty()) {
+                                                        for (int i = 0; i < Math.min(billItems.size(), 3); i++) {
+                                                            BillItemDTO item = billItems.get(i);
+                                                %>
+                                                <div class="small text-muted">
+                                                    <%
+                                                        List<ItemDTO> itemDTOS = (List<ItemDTO>) request.getAttribute("items");
+                                                        for (ItemDTO it : itemDTOS){
+                                                        if  (it.getId() == item.getItemId()){
+                                                    %>
+                                                    <%= it.getName() != null ? it.getName() : "Unknown Item" %>
+                                                    (Qty: <%= item.getQuantity() %>)
+                                                    <%
+                                                        }
+                                                        }
+                                                    %>
+                                                </div>
+                                                <%
+                                                        }
+                                                        if (billItems.size() > 3) {
+                                                %>
+                                                <div class="small text-muted">+<%= billItems.size() - 3 %> more items</div>
+                                                <%
+                                                        }
+                                                    } else {
+                                                %>
+                                                <span class="text-muted">No items</span>
+                                                <%
+                                                    }
+                                                %>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="bills?action=edit&id=<%= bill.getId() %>" 
+                                               class="btn btn-action btn-edit">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </a>
+<%--                                            <a href="bills?action=items&id=<%= bill.getId() %>" --%>
+<%--                                               class="btn btn-action btn-items">--%>
+<%--                                                <i class="fas fa-list me-1"></i>Items--%>
+<%--                                            </a>--%>
+                                            <a href="bills?action=print&id=<%= bill.getId() %>" 
+                                               class="btn btn-action btn-print">
+                                                <i class="fas fa-print me-1"></i>Print
+                                            </a>
+                                            <form action="bills" method="post" style="display:inline;" 
+                                                  onsubmit="return confirm('Are you sure you want to delete this bill?');">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<%= bill.getId() %>">
+                                                <button type="submit" class="btn btn-action btn-delete">
+                                                    <i class="fas fa-trash me-1"></i>Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <%
+                                            }
+                                        } else {
+                                    %>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="empty-state">
+                                                <i class="fas fa-file-invoice"></i>
+                                                <h5>No bills found</h5>
+                                                <p class="text-muted">Start by creating your first bill</p>
+                                                <a href="bills?action=new" class="btn btn-primary">
+                                                    <i class="fas fa-plus me-2"></i>Create Bill
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                    %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <a href="dashboard" class="btn btn-back">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>
