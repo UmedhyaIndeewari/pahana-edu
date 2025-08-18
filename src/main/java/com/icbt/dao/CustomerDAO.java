@@ -32,6 +32,7 @@ public class CustomerDAO {
 
         } catch (SQLException e) {
 
+
         }
         return null;
     }
@@ -58,6 +59,7 @@ public class CustomerDAO {
             }
 
         } catch (SQLException e) {
+
 
 
         }

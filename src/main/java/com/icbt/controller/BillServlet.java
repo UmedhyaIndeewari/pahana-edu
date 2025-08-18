@@ -94,6 +94,7 @@ public class BillServlet extends HttpServlet {
                     request.setAttribute("items", itemsWithDetails);
                     request.getRequestDispatcher("bill_summary.jsp").forward(request, response);
 
+
                 }
             }
         } else {
@@ -104,6 +105,7 @@ public class BillServlet extends HttpServlet {
             request.setAttribute("items", items);
             request.setAttribute("bills", billList);
             request.setAttribute("customers", customers);
+
 
             request.getRequestDispatcher("list_bill.jsp").forward(request, response);
 
@@ -124,6 +126,7 @@ public class BillServlet extends HttpServlet {
 
             boolean result = false;
             List<ItemDTO> items = itemService.getAllItems();
+
 
 
             switch (action) {
@@ -153,6 +156,7 @@ public class BillServlet extends HttpServlet {
                             }
                         }
 
+
                         billItems.add(billItemDTO);
                     }
                     for (BillItemDTO billItemDTO : billItems) {
@@ -161,6 +165,7 @@ public class BillServlet extends HttpServlet {
                     if (result) {
                         // Redirect to bill summary page instead of bills list
                         response.sendRedirect("bills?action=summary&id=" + addedBill.getId());
+
 
                     } else {
                         request.setAttribute("error", "Failed to add bill.");
@@ -199,6 +204,7 @@ public class BillServlet extends HttpServlet {
                         }
                         billItemService.addBillItem(billItemDTO);
                     }
+
 
                     if (result) {
                         response.sendRedirect("bills");

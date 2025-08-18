@@ -8,6 +8,7 @@
 
 <!DOCTYPE html>
 
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -133,6 +134,7 @@
             justify-content: center;
             margin: 0 auto 1.5rem;
             font-size: 1.5rem;
+
 
         }
     </style>
@@ -288,6 +290,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 </body>
 </html>
