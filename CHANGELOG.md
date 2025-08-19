@@ -1,4 +1,54 @@
 # 📦 Changelog
+## [v1.3.1] - 2025-08-16
+
+### Added / Completed
+- ✅ Bill summary added
+- ✅ Print bill option added
+
+### Fixed
+- 🛠 Total price calculation and validation issues in billing
+- 🛠 Customer insert functionality fixed
+- 🛠 Removed unnecessary ID field from Add Item JSP
+
+
+
+### Notes
+This release improves billing accuracy.
+
+## [v1.3.1] - 2025-08-16
+
+### Added / Completed
+- ✅ Bill summary added
+- ✅ Print bill option added
+
+### Fixed
+- 🛠 Total price calculation and validation issues in billing
+- 🛠 Customer insert functionality fixed
+- 🛠 Removed unnecessary ID field from Add Item JSP
+
+
+
+### Notes
+This release improves billing accuracy.
+
+
+## [v1.3.1] - 2025-08-16
+
+### Added / Completed
+- ✅ Bill summary added
+- ✅ Print bill option added
+
+### Fixed
+- 🛠 Total price calculation and validation issues in billing
+- 🛠 Customer insert functionality fixed
+- 🛠 Removed unnecessary ID field from Add Item JSP
+
+
+
+### Notes
+This release improves billing accuracy.
+
+
 
 ## [v1.3.1] - 2025-08-16
 
