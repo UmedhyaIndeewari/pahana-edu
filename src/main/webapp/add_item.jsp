@@ -135,7 +135,7 @@
             </h1>
             <p class="lead mb-0">Add a new item to your inventory</p>
         </div>
-    </div>
+ 
 
 
     <!-- Main Content -->

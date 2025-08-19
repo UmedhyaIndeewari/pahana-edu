@@ -141,7 +141,6 @@ public class CustomerServlet extends HttpServlet {
                     break;
 
 
-
                 default:
                     request.setAttribute("error", "Unknown action.");
                     request.getRequestDispatcher("list-customers.jsp").forward(request, response);
