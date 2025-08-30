@@ -20,8 +20,7 @@ A complete, production-ready **Bookshop Management System** built using Java Ser
     - User instructions and module guidance
 - 🖥️ **Dashboard**
     - Central navigation hub with styled UI and Font Awesome icons
-- 🌑 **Dark Mode UI**
-    - Consistent dark theme across all pages
+
 
 ---
 
@@ -64,7 +63,7 @@ bookshop-management/
 
 ## 🧪 Testing
 
-- JUnit 5 used for testing DAO and Service layers.
+- JUnit 5 used for testing  Service layers.
 - Tests use a real database connection (no mocking).
 - Test setup and teardown handled using `@BeforeEach` and `@AfterEach`.
 
@@ -85,26 +84,23 @@ bookshop-management/
 ### 1. Clone the Repository
 
 
-git clone https://github.com/your-username/bookshop-management.git
-cd bookshop-management
+git clone https://github.com/UmedhyaIndeewari/pahana-edu.git
+cd pahana-edu
 
 ### 2. Configure the Database
-Create a MySQL database named bookshop_db
+Create a MySQL database named pahana_edu
 
 Run the SQL scripts:
 
 -- Create tables and schema
-source sql/schema.sql;
-
--- Seed initial data
-source sql/seed_data.sql;
+source sql/pahana_edu.sql;
 
 ### 3. Update your DB connection settings in DBConnection.java:
 ```java
 
-private static final String URL = "jdbc:mysql://localhost:3306/bookshop_db";
+private static final String URL = "jdbc:mysql://localhost:3306/pahana_edu";
 private static final String USER = "root";
-private static final String PASSWORD = "your_password";
+private static final String PASSWORD = "";
 ```
 
 ### 4. Deploy to Apache Tomcat:
@@ -124,7 +120,7 @@ Password: admin123
 
 | Module   | Description                             |
 | -------- | --------------------------------------- |
-| Auth     | Secure login/logout, session validation |
+| User     | Secure login/logout, session validation |
 | Customer | Add/edit/delete/search customers        |
 | Items    | Manage item inventory                   |
 | Billing  | Add bills with real-time item totals    |
